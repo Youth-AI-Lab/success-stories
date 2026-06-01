@@ -1,14 +1,13 @@
 # Youth Ai Lab — Success Stories
 
-A static site hosting the success stories from the four Youth Ai Lab partner labs across Europe. Each story is a self-contained carnet (HTML page) generated from a markdown source filled in by the lab team.
+A repository hosting the success stories written by the four Youth Ai Lab partner labs. Each story is a self-contained static page, deployed on GitHub Pages, with its own unique URL. There is no global index — each carnet stands alone.
 
-Production URL: configured via GitHub Pages (see Deployment below).
+The carnet in `template/` is the master template. Every new story copies it as a starting point, lives in its own folder at the root of the repo, and is published as a fresh URL.
 
 ## Structure
 
 ```
-SuccessStories/
-├── index.html                  Landing page listing the four countries
+success-stories/
 ├── README.md
 ├── CommonVisuals/              Shared assets (logos, banner, EU emblem)
 │   ├── banner.png
@@ -17,89 +16,69 @@ SuccessStories/
 │   ├── LogoLabItaly.png
 │   ├── LogoLabSpain.png        (to add)
 │   └── LogoLabBelgium.png      (to add)
-├── italy/                      One folder per country
-│   ├── index.html              Country landing: list of stories
-│   └── 01/                     One folder per story, two-digit padding
-│       ├── index.html          The success story carnet
-│       ├── hero.jpg            Story-specific media
-│       └── …
-├── france/
+├── template/
+│   └── index.html              Master template (currently demoed with "Le retour des Pacman's")
+├── success-story-template.md   Markdown source partners fill in
+├── generate-pdf.js             Puppeteer script that exports a carnet to a clean PDF
+├── {story-slug-1}/             One folder per published story, slug chosen freely
 │   ├── index.html
-│   ├── 01/                     Le retour des Pacman's
+│   ├── hero.jpg
 │   └── …
-├── spain/
-│   └── index.html
-├── belgium/
-│   └── index.html
-├── success-story-template.md   Markdown template for partners
-└── generate-pdf.js             Puppeteer script to export a carnet to PDF
+├── {story-slug-2}/
+└── …
 ```
 
-## URL conventions
+## URL convention
 
-- `/` — landing with four country cards
-- `/{country}/` — country landing with its list of stories
-- `/{country}/{NN}/` — a single story (carnet)
+Each story has its own URL, no central hub:
 
-Country slugs: `italy`, `france`, `spain`, `belgium` (lowercase English, no accents).
-Story numbers: two-digit padding (`01`, `02`, …, `12`) for natural sort order.
+- `…/success-stories/template/` — the master template
+- `…/success-stories/{slug}/` — a single published story
 
-## Adding a new success story
+The slug is whatever the lab and the coordinator agree on for that story. Keep it readable, lowercase, hyphenated, e.g. `france-pacmans-niveau-2`, `italy-bias-bot`, `belgium-wolfpack-debate`.
 
-1. **Get the markdown template**
+## Publishing a new story
 
-   Send the partner the file `success-story-template.md`. They fill in the frontmatter and each section, then return the filled `.md` plus the media files (hero image, video, productions).
+1. **Partner fills the markdown template**
 
-2. **Generate the carnet**
+   Send the partner `success-story-template.md`. They fill in the frontmatter and each section, then return the filled `.md` plus the media files (hero, video, productions, logos).
 
-   (Once the generator script is wired) run:
-   ```bash
-   node generate-from-md.js path/to/filled.md italy/02/
-   ```
-   This drops the carnet `index.html` into the destination, copies the media files, and updates the country index.
+2. **Generate the carnet folder**
 
-3. **Update the country index**
+   - Copy `template/index.html` to a new folder named with the story slug, e.g. `france-pacmans-niveau-2/index.html`.
+   - Replace the placeholder content in the HTML with the partner's filled content (period, country, title, lab name, lab logo path, the five chapters, the quote, the numbers, the gallery photos).
+   - Drop the media files in the same folder. Update the paths in the HTML so they point to the local files.
 
-   Edit `{country}/index.html` and add a card linking to the new story.
-
-4. **Commit and push** — GitHub Pages will redeploy automatically.
+3. **Commit and push** — GitHub Pages redeploys automatically. The new story is live at `…/success-stories/{slug}/`.
 
 ## Local preview
 
-Any modern browser can open the HTML files directly:
-
 ```bash
-open SuccessStories/index.html
-```
-
-For a more accurate Pages-like preview that handles relative paths cleanly:
-
-```bash
-cd SuccessStories
+cd success-stories
 python3 -m http.server 8000
-# then open http://localhost:8000/
+# then open http://localhost:8000/template/
 ```
 
 ## PDF export
 
 Two paths:
 
-- **In-browser**: open a carnet (e.g. `france/01/`), click the *Download this story as PDF* button. The print stylesheet flattens the book into A4 pages.
-- **Headless / batch**: from the `SuccessStories/` folder, install dependencies once and run:
+- **In-browser**: open a carnet, click the *Download this story as PDF* button. The print stylesheet flattens the book into A4 pages and the Pacman avatar plus the lab logo float to the right of the content.
+- **Headless / batch**: install the dependencies once and run Puppeteer:
   ```bash
   npm init -y && npm install puppeteer pdf-lib
-  node generate-pdf.js france/01/index.html france/01/story.pdf
+  node generate-pdf.js template/index.html template/story.pdf
   ```
   This renders each spread of the carnet at 1500×950 and stitches them into a single PDF.
 
 ## Deployment (GitHub Pages)
 
-1. Push the `SuccessStories/` content to a public GitHub repo (e.g. `youthailab/success-stories`). It can be the whole project or this folder copied as the repo root.
-2. In the repo settings → Pages, set the source to `main` branch / `/` (root) — or `/docs` if you nest one level.
-3. Default URL: `https://{org}.github.io/{repo}/`.
-4. **Custom domain (recommended)**: add a `CNAME` file at the root containing e.g. `stories.youth-ai-lab.eu`, then point a CNAME DNS record `stories` → `{org}.github.io`. Enable HTTPS in Pages settings once the cert provisions.
+The repo is published as a GitHub Pages site:
 
-## Editorial guidelines
+- Default URL: `https://youth-ai-lab.github.io/success-stories/`
+- Custom domain (optional): add a `CNAME` file at the root containing the target host (e.g. `stories.youth-ai-lab.eu`), then point a CNAME DNS record `stories` → `youth-ai-lab.github.io`. Enable HTTPS in Pages settings once the cert provisions.
+
+## Editorial guidelines for partners
 
 See `success-story-template.md` for the writing principles partners follow when filling a story:
 
