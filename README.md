@@ -2,7 +2,7 @@
 
 A repository hosting the success stories written by the four Youth Ai Lab partner labs. Each story is a self-contained static page, deployed on GitHub Pages, with its own unique URL. There is no global index — each carnet stands alone.
 
-The carnet in `template/` is the master template. Every new story copies it as a starting point, lives in its own folder at the root of the repo, and is published as a fresh URL.
+The carnet in `france-pacmans-success-01/` is the inaugural carnet (France, Pacman's team, story #1) and currently doubles as the visual reference for the template. Every new story copies it as a starting point, lives in its own folder at the root of the repo, and is published as a fresh URL.
 
 ## Structure
 
@@ -16,26 +16,36 @@ success-stories/
 │   ├── LogoLabItaly.png
 │   ├── LogoLabSpain.png        (to add)
 │   └── LogoLabBelgium.png      (to add)
-├── template/
-│   └── index.html              Master template (currently demoed with "Le retour des Pacman's")
 ├── success-story-template.md   Markdown source partners fill in
 ├── generate-pdf.js             Puppeteer script that exports a carnet to a clean PDF
-├── {story-slug-1}/             One folder per published story, slug chosen freely
+├── france-pacmans-success-01/  One folder per published story
 │   ├── index.html
 │   ├── hero.jpg
 │   └── …
-├── {story-slug-2}/
+├── france-pacmans-success-02/
+├── italy-perlatecnica-success-01/
 └── …
 ```
 
 ## URL convention
 
-Each story has its own URL, no central hub:
+Each story has its own URL, no central hub. Slug pattern:
 
-- `…/success-stories/template/` — the master template
-- `…/success-stories/{slug}/` — a single published story
+```
+{country}-{team-slug}-success-{NN}
+```
 
-The slug is whatever the lab and the coordinator agree on for that story. Keep it readable, lowercase, hyphenated, e.g. `france-pacmans-niveau-2`, `italy-bias-bot`, `belgium-wolfpack-debate`.
+Where:
+- `country` — `france`, `italy`, `spain`, `belgium`
+- `team-slug` — lowercase team identifier (e.g. `pacmans`, `perlatecnica`, `llum`, `wolfpack`)
+- `NN` — two-digit story number for the team (`01`, `02`, …)
+
+Examples:
+- `…/success-stories/france-pacmans-success-01/`
+- `…/success-stories/france-pacmans-success-02/`
+- `…/success-stories/italy-perlatecnica-success-01/`
+- `…/success-stories/belgium-wolfpack-success-01/`
+- `…/success-stories/spain-llum-success-01/`
 
 ## Publishing a new story
 
@@ -45,7 +55,7 @@ The slug is whatever the lab and the coordinator agree on for that story. Keep i
 
 2. **Generate the carnet folder**
 
-   - Copy `template/index.html` to a new folder named with the story slug, e.g. `france-pacmans-niveau-2/index.html`.
+   - Copy any existing carnet (e.g. `france-pacmans-success-01/index.html`) to a new folder following the slug pattern, e.g. `france-pacmans-success-02/index.html`.
    - Replace the placeholder content in the HTML with the partner's filled content (period, country, title, lab name, lab logo path, the five chapters, the quote, the numbers, the gallery photos).
    - Drop the media files in the same folder. Update the paths in the HTML so they point to the local files.
 
@@ -56,7 +66,7 @@ The slug is whatever the lab and the coordinator agree on for that story. Keep i
 ```bash
 cd success-stories
 python3 -m http.server 8000
-# then open http://localhost:8000/template/
+# then open http://localhost:8000/france-pacmans-success-01/
 ```
 
 ## PDF export
@@ -67,7 +77,7 @@ Two paths:
 - **Headless / batch**: install the dependencies once and run Puppeteer:
   ```bash
   npm init -y && npm install puppeteer pdf-lib
-  node generate-pdf.js template/index.html template/story.pdf
+  node generate-pdf.js france-pacmans-success-01/index.html france-pacmans-success-01/story.pdf
   ```
   This renders each spread of the carnet at 1500×950 and stitches them into a single PDF.
 
