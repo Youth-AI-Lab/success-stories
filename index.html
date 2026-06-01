@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Youth Ai Lab · Success Stories</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;700;800&family=Manrope:wght@400;500;600;700&display=swap');
+  :root {
+    --bg: #f7f4e8;
+    --ink: #1a1a1a;
+    --soft: #6c6c6c;
+    --green: #7ed957; --green-deep: #5fb83a; --green-soft: #dbffcb;
+    --pink: #fa89d2; --pink-soft: #ffd9f2;
+    --yellow: #f9c724; --yellow-soft: #f9eecd;
+    --orange: #f37030; --orange-soft: #ffd5c1;
+    --blue: #38b6ff; --blue-soft: #cbecff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); font-family: 'Manrope', system-ui, sans-serif; color: var(--ink); min-height: 100%; }
+  h1, .eyebrow { font-family: 'Bricolage Grotesque', sans-serif; }
+  main { max-width: 1100px; margin: 0 auto; padding: 80px 32px; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 8px 16px; background: var(--green-soft); color: var(--green-deep);
+    border-radius: 14px; font-size: 12px; font-weight: 800;
+    letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 20px;
+  }
+  .logo-img {
+    width: 28px; height: 28px; border-radius: 50%;
+    background-image: url('CommonVisuals/youthailab_rounded.png');
+    background-size: cover; background-position: center;
+    display: inline-block;
+  }
+  h1 { font-size: 64px; font-weight: 900; line-height: 1; letter-spacing: -2px; margin-bottom: 18px; }
+  h1 em { color: var(--green); font-style: normal; }
+  .lead { font-size: 18px; color: var(--soft); line-height: 1.6; max-width: 640px; margin-bottom: 56px; }
+  .section-title {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 14px; font-weight: 800;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--soft); margin: 48px 0 16px;
+  }
+  .country-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 22px;
+  }
+  .card {
+    display: block; background: #fff; border-radius: 22px;
+    padding: 28px; text-decoration: none; color: var(--ink);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    position: relative; overflow: hidden;
+  }
+  .card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.1); }
+  .card .flag {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 52px; height: 52px; border-radius: 14px;
+    margin-bottom: 16px; font-size: 28px;
+  }
+  .card.italy .flag    { background: var(--green-soft); }
+  .card.france .flag   { background: var(--yellow-soft); }
+  .card.spain .flag    { background: var(--orange-soft); }
+  .card.belgium .flag  { background: var(--blue-soft); }
+  .card.template .flag { background: var(--pink-soft); }
+  .card .name {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 22px; font-weight: 800; margin-bottom: 6px;
+  }
+  .card .tag {
+    font-size: 12px; color: var(--soft); font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .card .arrow {
+    position: absolute; top: 28px; right: 28px;
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--green); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 16px; opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .card:hover .arrow { opacity: 1; }
+  footer {
+    margin-top: 80px; padding-top: 32px;
+    border-top: 1px solid rgba(0,0,0,0.08);
+    color: var(--soft); font-size: 12px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  footer a { color: inherit; text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<main>
+  <span class="eyebrow"><span class="logo-img"></span>Youth Ai Lab</span>
+  <h1>Success stories<br>from the <em>field.</em></h1>
+  <p class="lead">
+    Success stories written by the four Youth Ai Lab partner labs across Europe. Each carnet is a window on what was tried with young people, what surprised the team, and what carries forward.
+  </p>
+
+  <div class="section-title">Template</div>
+  <div class="country-grid">
+    <a class="card template" href="template/">
+      <div class="flag">📓</div>
+      <div class="name">Carnet template</div>
+      <div class="tag">Reference layout · start here</div>
+      <div class="arrow">→</div>
+    </a>
+  </div>
+
+  <div class="section-title">By country</div>
+  <div class="country-grid">
+    <a class="card france" href="france/">
+      <div class="flag">🇫🇷</div>
+      <div class="name">France</div>
+      <div class="tag">Centrale Lab</div>
+      <div class="arrow">→</div>
+    </a>
+    <a class="card italy" href="italy/">
+      <div class="flag">🇮🇹</div>
+      <div class="name">Italy</div>
+      <div class="tag">Perlatecnica</div>
+      <div class="arrow">→</div>
+    </a>
+    <a class="card spain" href="spain/">
+      <div class="flag">🇪🇸</div>
+      <div class="name">Spain</div>
+      <div class="tag">Catalonia · LLUM</div>
+      <div class="arrow">→</div>
+    </a>
+    <a class="card belgium" href="belgium/">
+      <div class="flag">🇧🇪</div>
+      <div class="name">Belgium</div>
+      <div class="tag">Wolfpack</div>
+      <div class="arrow">→</div>
+    </a>
+  </div>
+
+  <footer>
+    <span>Co-funded by the European Union</span>
+    <span>·</span>
+    <a href="https://youth-ai-lab.eu/">youth-ai-lab.eu</a>
+  </footer>
+</main>
+
+</body>
+</html>
