@@ -1,0 +1,1969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Youth Ai Lab Success Story (template)</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=Patrick+Hand&display=swap');
+
+  :root {
+    --bg: #f7f4e8;
+    --paper: #ffffff;
+    --ink: #1a1a1a;
+    --soft: #6c6c6c;
+    --softer: #a3a3a3;
+    --line: #ece8d8;
+
+    --green: #7ed957;
+    --green-deep: #5fb83a;
+    --green-soft: #dbffcb;
+
+    --pink: #fa89d2;
+    --pink-deep: #d966ad;
+    --pink-soft: #ffd9f2;
+
+    --yellow: #f9c724;
+    --yellow-deep: #c99c00;
+    --yellow-soft: #f9eecd;
+
+    --orange: #f37030;
+    --orange-deep: #c95816;
+    --orange-soft: #ffd5c1;
+
+    --blue: #38b6ff;
+    --blue-deep: #1d8fd1;
+    --blue-soft: #cbecff;
+  }
+
+  /* Pair B: Bricolage Grotesque (titles) + Manrope (body) + Patrick Hand (handwritten accents) */
+  body, .face, .static-left, .static-right {
+    font-family: 'Manrope', system-ui, -apple-system, sans-serif;
+  }
+  h1, h2, .title, .entry-title, .toc-title, .q-label, .eyebrow, .badge-num, .period-pill,
+  .chapter-title .label, .subtitle, .footer-mark, .left-footer, .indicator {
+    font-family: 'Bricolage Grotesque', 'Manrope', system-ui, sans-serif;
+  }
+  /* handwritten accent: title em, marginalia */
+  .title em, .entry-title em {
+    font-family: 'Patrick Hand', cursive;
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    background: var(--bg);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---------- STAGE ---------- */
+  .stage { position: fixed; inset: 0; overflow: hidden; }
+
+  .book {
+    position: absolute;
+    width: 1500px;
+    height: 950px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(var(--book-scale, 1));
+    transform-origin: center center;
+    perspective: 3500px;
+    perspective-origin: center;
+  }
+
+  .book-base {
+    position: absolute;
+    inset: 0;
+    background: var(--paper);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.25);
+  }
+  .book-base::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 24px;
+    transform: translateX(-50%);
+    background: linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.06) 30%, rgba(0,0,0,0.12) 50%, rgba(0,0,0,0.06) 70%, transparent 100%);
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  .sheet {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    transform-origin: left center;
+    transform-style: preserve-3d;
+    transition: transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+  .sheet.turned { transform: rotateY(-180deg); }
+  .sheet.turning .face {
+    box-shadow: 0 12px 28px rgba(0,0,0,0.12), inset 12px 0 22px rgba(0,0,0,0.06);
+    transition: box-shadow 0.3s ease;
+  }
+  .sheet.turning .face.back {
+    box-shadow: 0 12px 28px rgba(0,0,0,0.12), inset -12px 0 22px rgba(0,0,0,0.06);
+  }
+
+  .face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    background: var(--paper);
+    padding: 60px 70px;
+    overflow: hidden;
+  }
+  .face.front { box-shadow: inset 14px 0 24px rgba(0,0,0,0.05); }
+  .face.back {
+    transform: rotateY(180deg);
+    box-shadow: inset -14px 0 24px rgba(0,0,0,0.05);
+  }
+
+  /* per-chapter accent colors */
+  .face.ch-01 { --accent: var(--green); --accent-deep: var(--green-deep); --accent-soft: var(--green-soft); }
+  .face.ch-02 { --accent: var(--pink); --accent-deep: var(--pink-deep); --accent-soft: var(--pink-soft); }
+  .face.ch-03 { --accent: var(--yellow); --accent-deep: var(--yellow-deep); --accent-soft: var(--yellow-soft); }
+  .face.ch-04 { --accent: var(--blue); --accent-deep: var(--blue-deep); --accent-soft: var(--blue-soft); }
+  .face.ch-05 { --accent: var(--orange); --accent-deep: var(--orange-deep); --accent-soft: var(--orange-soft); }
+
+  /* chapter faces: flex column so the last element always lands above the footer arrow
+     and text boxes absorb the remaining space */
+  .face.ch-01, .face.ch-02, .face.ch-03, .face.ch-04, .face.ch-05 {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 130px;
+    gap: 24px;
+  }
+  /* header rows keep their natural size */
+  .face.ch-01 > .header-row, .face.ch-02 > .header-row, .face.ch-03 > .header-row, .face.ch-04 > .header-row, .face.ch-05 > .header-row,
+  .face.ch-01 > .entry-title, .face.ch-02 > .entry-title, .face.ch-03 > .entry-title, .face.ch-04 > .entry-title, .face.ch-05 > .entry-title {
+    flex: 0 0 auto;
+    margin-bottom: 0;
+  }
+  /* chapter eyebrow inherits the chapter accent color */
+  .face.ch-01 .eyebrow { color: var(--green-deep); background: var(--green-soft); }
+  .face.ch-02 .eyebrow { color: var(--pink-deep); background: var(--pink-soft); }
+  .face.ch-03 .eyebrow { color: var(--yellow-deep); background: var(--yellow-soft); }
+  .face.ch-04 .eyebrow { color: var(--blue-deep); background: var(--blue-soft); }
+  .face.ch-05 .eyebrow { color: var(--orange-deep); background: var(--orange-soft); }
+  /* mix up the period & country pill colors per chapter to keep things dynamic */
+  .face.ch-01 .period-pill:not(.country-pill) { background: var(--pink-soft); color: var(--pink-deep); }
+  .face.ch-01 .period-pill:not(.country-pill) .p-num.empty { color: var(--pink-deep); border-color: var(--pink-deep); }
+  .face.ch-01 .country-pill { background: var(--orange-soft); color: var(--orange-deep); }
+  .face.ch-01 .country-pill .p-num.empty { color: var(--orange-deep); border-color: var(--orange-deep); }
+  .face.ch-02 .period-pill:not(.country-pill) { background: var(--blue-soft); color: var(--blue-deep); }
+  .face.ch-02 .period-pill:not(.country-pill) .p-num.empty { color: var(--blue-deep); border-color: var(--blue-deep); }
+  .face.ch-02 .country-pill { background: var(--yellow-soft); color: var(--yellow-deep); }
+  .face.ch-02 .country-pill .p-num.empty { color: var(--yellow-deep); border-color: var(--yellow-deep); }
+  .face.ch-03 .period-pill:not(.country-pill) { background: var(--green-soft); color: var(--green-deep); }
+  .face.ch-03 .period-pill:not(.country-pill) .p-num.empty { color: var(--green-deep); border-color: var(--green-deep); }
+  .face.ch-03 .country-pill { background: var(--pink-soft); color: var(--pink-deep); }
+  .face.ch-03 .country-pill .p-num.empty { color: var(--pink-deep); border-color: var(--pink-deep); }
+  .face.ch-04 .period-pill:not(.country-pill) { background: var(--orange-soft); color: var(--orange-deep); }
+  .face.ch-04 .period-pill:not(.country-pill) .p-num.empty { color: var(--orange-deep); border-color: var(--orange-deep); }
+  .face.ch-04 .country-pill { background: var(--green-soft); color: var(--green-deep); }
+  .face.ch-04 .country-pill .p-num.empty { color: var(--green-deep); border-color: var(--green-deep); }
+  .face.ch-05 .period-pill:not(.country-pill) { background: var(--yellow-soft); color: var(--yellow-deep); }
+  .face.ch-05 .period-pill:not(.country-pill) .p-num.empty { color: var(--yellow-deep); border-color: var(--yellow-deep); }
+  .face.ch-05 .country-pill { background: var(--blue-soft); color: var(--blue-deep); }
+  .face.ch-05 .country-pill .p-num.empty { color: var(--blue-deep); border-color: var(--blue-deep); }
+  /* q-blocks: grow to fill remaining space; label + content inside also share the same gap */
+  .face.ch-01 > .q-block, .face.ch-02 > .q-block, .face.ch-03 > .q-block, .face.ch-04 > .q-block, .face.ch-05 > .q-block {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0;
+    min-height: 0;
+    gap: 12px; /* tighter title→content spacing inside a block */
+    margin-bottom: 0;
+  }
+  .face.ch-01 .q-block .q-label, .face.ch-02 .q-block .q-label, .face.ch-03 .q-block .q-label, .face.ch-04 .q-block .q-label, .face.ch-05 .q-block .q-label {
+    margin-bottom: 0;
+    flex: 0 0 auto;
+  }
+  /* q-blocks holding a fixed-size widget (video, quote, photos, lists, skills) don't grow */
+  .face .q-block:has(.video),
+  .face .q-block:has(.quote-fillable),
+  .face .q-block:has(.mentors-word),
+  .face .q-block:has(.fillable-row),
+  .face .q-block:has(.skill-checks),
+  .face .q-block:has(.columns-2) {
+    flex: 0 0 auto;
+  }
+  /* text fillable expands to absorb remaining space inside its q-block */
+  .face .q-block > .fillable {
+    flex: 1 1 auto;
+    min-height: 60px;
+  }
+
+  /* ---------- NAVIGATION (banner-motif arrows, bleed area) ---------- */
+  .nav-btn {
+    position: fixed;
+    top: 50%;
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    background: #fff;
+    border: none;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 60;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.12), 0 0 0 0 rgba(126,217,87,0);
+    transform: translateY(-50%) scale(1);
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.3s ease,
+                background 0.25s ease;
+    padding: 0;
+    user-select: none;
+    animation: navFloat 4s ease-in-out infinite;
+  }
+  .nav-btn.prev { left: 26px; }
+  .nav-btn.next { right: 26px; animation-delay: -2s; }
+
+  @keyframes navFloat {
+    0%, 100% { transform: translateY(-50%) scale(1); }
+    50%      { transform: translateY(calc(-50% - 4px)) scale(1); }
+  }
+
+  .nav-btn svg {
+    width: 36px;
+    height: 36px;
+    overflow: visible;
+    transition: transform 0.3s ease;
+  }
+  .nav-btn .arr-line {
+    stroke: var(--orange);
+    stroke-width: 4;
+    stroke-linecap: round;
+    fill: none;
+    transition: stroke 0.25s ease;
+  }
+  .nav-btn .arr-chevron {
+    fill: var(--pink);
+    stroke: var(--pink);
+    stroke-width: 2;
+    stroke-linejoin: round;
+    transition: fill 0.25s ease, stroke 0.25s ease;
+  }
+  .nav-btn .arr-dot {
+    fill: var(--green-deep);
+    transition: fill 0.25s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .nav-btn.next .arr-dot { transform-origin: 32px 18px; }
+  .nav-btn.prev .arr-dot { transform-origin: 4px 18px; }
+
+  .nav-btn:hover {
+    box-shadow: 0 12px 30px rgba(0,0,0,0.18),
+                0 0 0 8px rgba(250,137,210,0.18),
+                0 0 32px rgba(56,182,255,0.25);
+    animation-play-state: paused;
+    transform: translateY(-50%) scale(1.08);
+  }
+  .nav-btn:hover .arr-line { stroke: var(--blue-deep); }
+  .nav-btn:hover .arr-chevron { fill: var(--green); stroke: var(--green); }
+  .nav-btn:hover .arr-dot { fill: var(--yellow-deep); }
+  .nav-btn.next:hover .arr-dot { transform: translateX(3px) scale(1.2); }
+  .nav-btn.prev:hover .arr-dot { transform: translateX(-3px) scale(1.2); }
+  .nav-btn:active { transform: translateY(-50%) scale(0.96); }
+
+  .nav-btn.disabled {
+    opacity: 0.25;
+    pointer-events: none;
+    animation: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  }
+  .nav-btn.disabled .arr-line { stroke: var(--softer); }
+  .nav-btn.disabled .arr-dot { fill: var(--softer); }
+
+  /* ---------- PAGE CORNER FOLD (white-on-white illusion via shadow) ---------- */
+  .corner-fold {
+    position: absolute;
+    bottom: 0;
+    width: 70px;
+    height: 70px;
+    z-index: 70;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    pointer-events: none; /* purely decorative — clicks handled by the sheet itself */
+  }
+  /* the corner itself: a triangle that shows the underside of the page (slightly cooler white) */
+  .corner-fold::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(225deg, #fafafa 0%, #ebebeb 100%);
+    box-shadow:
+      inset 4px 4px 6px rgba(0,0,0,0.10),
+      -2px -2px 6px rgba(0,0,0,0.25);
+  }
+  .corner-next::before {
+    clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  }
+  .corner-prev::before {
+    clip-path: polygon(0 0, 100% 100%, 0 100%);
+    background: linear-gradient(-45deg, #fafafa 0%, #ebebeb 100%);
+    box-shadow:
+      inset -4px 4px 6px rgba(0,0,0,0.10),
+      2px -2px 6px rgba(0,0,0,0.25);
+  }
+  /* the dark cast shadow under the fold, on the page below */
+  .corner-fold::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+  }
+  .corner-next::after {
+    right: 0;
+    background: radial-gradient(circle at 100% 100%, rgba(0,0,0,0.18) 0%, transparent 60%);
+    clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  }
+  .corner-prev::after {
+    left: 0;
+    background: radial-gradient(circle at 0% 100%, rgba(0,0,0,0.18) 0%, transparent 60%);
+    clip-path: polygon(0 0, 100% 100%, 0 100%);
+  }
+  .corner-fold {
+    position: absolute;
+    bottom: 0;
+    width: 70px;
+    height: 70px;
+  }
+  .corner-next { right: 0; }
+  .corner-prev { left: 0; }
+  .corner-fold:hover { transform: translateY(-3px); }
+  .corner-fold.disabled { opacity: 0; pointer-events: none; }
+
+  /* ---------- INDICATOR (right edge aligned with the dot ending the footer separator) ---------- */
+  .indicator {
+    position: fixed;
+    bottom: 18px;
+    right: calc((100vw - 1500px * var(--book-scale, 1)) / 2 + 70px * var(--book-scale, 1));
+    left: auto;
+    top: auto;
+    transform: none;
+    color: var(--soft);
+    font-size: 13px;
+    font-weight: 500;
+    background: rgba(255,255,255,0.92);
+    padding: 8px 18px;
+    border-radius: 24px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+    z-index: 50;
+    pointer-events: none;
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    text-align: right;
+  }
+  .indicator strong { color: var(--green-deep); font-weight: 800; }
+  .indicator .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--softer); }
+  .indicator .hint-meta { color: var(--softer); font-size: 12px; }
+
+  /* ---------- HEADINGS ---------- */
+  h1.title {
+    font-weight: 900;
+    font-size: 58px;
+    line-height: 0.95;
+    letter-spacing: -2px;
+    color: var(--ink);
+    margin-bottom: 14px;
+  }
+  h1.title em { color: var(--accent, var(--green)); font-style: normal; }
+  .subtitle {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--soft);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+  .entry-title {
+    font-weight: 800;
+    font-size: 38px;
+    line-height: 1.05;
+    letter-spacing: -0.8px;
+    color: var(--ink);
+    margin-bottom: 22px;
+  }
+  .entry-title em { color: var(--accent, var(--green)); font-style: normal; }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    height: 28px;
+    padding: 0 14px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--green-deep);
+    background: var(--green-soft);
+    border-radius: 14px;
+    margin-bottom: 16px;
+    line-height: 1;
+  }
+
+  /* ---------- CHAPTER HEADER ---------- */
+  .chapter-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+  .chapter-title .badge-num {
+    width: 36px; height: 36px; font-size: 12px;
+  }
+  .chapter-title .label {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent-deep, var(--soft));
+  }
+
+  /* ---------- QUESTION + HINT + FILLABLE ---------- */
+  .q-block { margin-bottom: 40px; }
+  .q-label {
+    display: block;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 12px;
+    line-height: 1.3;
+  }
+  .q-label .q-num {
+    color: var(--accent-deep, var(--green-deep));
+    font-weight: 800;
+    margin-right: 8px;
+    font-size: 15px;
+  }
+  .q-hint { display: none; } /* hints hidden in the reader-facing version */
+
+  .fillable {
+    display: block;
+    background: #ececec;
+    border: none;
+    border-radius: 8px;
+    padding: 14px 16px;
+    min-height: 95px;
+    color: var(--ink);
+    font-style: normal;
+    font-size: 13px;
+    line-height: 1.55;
+    transition: background 0.15s;
+  }
+  .fillable:hover { background: var(--accent-soft, var(--green-soft)); }
+  .fillable.tall { min-height: 145px; }
+  .fillable.short { min-height: 48px; padding: 8px 14px; }
+
+  .fillable-inline {
+    display: inline-block;
+    background: #ececec;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 13px;
+    color: var(--ink);
+    font-style: normal;
+    min-width: 180px;
+  }
+
+  .fillable-row {
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+  .fillable-row .row-num {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: var(--green-soft);
+    color: var(--green-deep);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 13px;
+  }
+  .fillable-row .row-num.pink { background: var(--pink-soft); color: var(--pink-deep); }
+  .fillable-row .row-num.orange { background: var(--orange-soft); color: var(--orange); }
+  .fillable-row .row-num.yellow { background: var(--yellow-soft); color: var(--yellow-deep); }
+  .fillable-row .row-num.blue { background: var(--blue-soft); color: var(--blue-deep); }
+
+  /* ---------- COVER FIELDS ---------- */
+  .cover-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 20px;
+    margin: 20px 0 28px;
+  }
+  .cover-fields .cf {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .cover-fields .cf-key {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--soft);
+    min-width: 80px;
+  }
+
+  /* ---------- ILLUSTRATIONS ---------- */
+  .illus, .upload {
+    width: 100%;
+    aspect-ratio: 16/9;
+    border-radius: 14px;
+    background: var(--bg);
+    border: 2px dashed var(--line);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink);
+    font-weight: 500;
+    font-size: 13px;
+    font-style: normal;
+    transition: all 0.15s;
+    cursor: pointer;
+  }
+  .illus:hover { border-color: var(--green); background: var(--green-soft); }
+  .upload-small { aspect-ratio: 16/9; border-radius: 12px; }
+
+  .upload-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .upload-icon::before {
+    content: '+';
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: var(--green);
+    color: #fff;
+    font-weight: 700;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(46,184,114,0.25);
+  }
+
+  /* ---------- VIDEO ---------- */
+  .video {
+    width: 100%;
+    aspect-ratio: 16/9;
+    border-radius: 14px;
+    background: #0f1d2a;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  }
+  .video::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(126,217,87,0.55), rgba(56,182,255,0.4) 50%, rgba(250,137,210,0.45));
+  }
+  .video .play {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.35);
+    transition: transform 0.2s;
+  }
+  .video:hover .play { transform: scale(1.07); }
+  .video .play::after {
+    content: '';
+    width: 0; height: 0;
+    border-left: 20px solid var(--green-deep);
+    border-top: 12px solid transparent;
+    border-bottom: 12px solid transparent;
+    margin-left: 5px;
+  }
+  .video .v-meta {
+    position: absolute;
+    bottom: 14px;
+    left: 16px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 12px;
+    background: rgba(0,0,0,0.45);
+    padding: 6px 12px;
+    border-radius: 14px;
+    z-index: 2;
+  }
+  .video .v-corner {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 10px;
+    background: rgba(255,255,255,0.18);
+    padding: 5px 10px;
+    border-radius: 12px;
+    z-index: 2;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* (quote-fillable styled together with mentors-word further below) */
+
+  /* ---------- SKILL CHECKBOXES ---------- */
+  .skill-checks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  .skill-check {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    border: 2px solid var(--line);
+    color: var(--soft);
+    background: var(--paper);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .skill-check::before {
+    content: '';
+    width: 14px;
+    height: 14px;
+    border-radius: 4px;
+    border: 2px solid var(--softer);
+    display: block;
+  }
+  .skill-check:hover { border-color: var(--green); color: var(--green-deep); }
+  .skill-check.checked {
+    background: var(--green-soft);
+    border-color: var(--green);
+    color: var(--green-deep);
+  }
+  .skill-check.checked::before {
+    background: var(--green);
+    border-color: var(--green);
+  }
+
+  /* ---------- PS ---------- */
+  .ps {
+    margin-top: 22px;
+    padding: 14px 18px;
+    background: var(--green-soft);
+    border-radius: 12px;
+    color: var(--green-deep);
+    font-weight: 500;
+    font-size: 14px;
+  }
+  .ps strong {
+    font-weight: 800;
+    margin-right: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 11px;
+  }
+
+  /* ---------- PDF DOWNLOAD BUTTON ---------- */
+  .pdf-download {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 22px;
+    background: var(--green);
+    color: #fff;
+    border: none;
+    border-radius: 22px;
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(126,217,87,0.35);
+    transition: transform 0.15s, box-shadow 0.15s;
+    margin-top: 18px;
+  }
+  .pdf-download:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px rgba(126,217,87,0.45);
+  }
+  .pdf-download .icon {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.25);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    line-height: 1;
+  }
+
+  /* ---------- PRINT (PDF export) ---------- */
+  @media print {
+    @page { size: A4 portrait; margin: 12mm; }
+
+    html, body {
+      background: #fff !important;
+      overflow: visible !important;
+      height: auto !important;
+      width: auto !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    /* Hide all interactive chrome */
+    .book-base, .nav-btn, .indicator, .pdf-download, .corner-fold,
+    .footer-mark::before, .footer-mark::after,
+    .stage::before, .stage::after { display: none !important; }
+
+    /* absolute-positioned cover/TOC decorations float to the right in print so the
+       Pacman avatar and the lab logo nest in their corner while text wraps naturally */
+    .team-avatar, .lab-logo.big {
+      position: static !important;
+      top: auto !important;
+      right: auto !important;
+      left: auto !important;
+      transform: none !important;
+      float: right !important;
+      margin: 0 0 4mm 6mm !important;
+      shape-outside: margin-box;
+    }
+
+    /* Unwind all absolute positioning and 3D transforms */
+    .stage {
+      position: static !important;
+      overflow: visible !important;
+      width: 100% !important;
+      height: auto !important;
+      inset: auto !important;
+    }
+    .book {
+      position: static !important;
+      width: 100% !important;
+      height: auto !important;
+      transform: none !important;
+      perspective: none !important;
+      background: #fff !important;
+      display: block !important;
+      inset: auto !important;
+    }
+    .sheet {
+      position: static !important;
+      width: 100% !important;
+      height: auto !important;
+      transform: none !important;
+      transition: none !important;
+      transform-style: flat !important;
+      perspective: none !important;
+      display: block !important;
+      page-break-after: auto;
+      box-shadow: none !important;
+    }
+    .face,
+    .static-left,
+    .static-right {
+      position: static !important;
+      width: 100% !important;
+      max-width: 180mm !important;
+      margin: 0 auto !important;
+      height: auto !important;
+      min-height: auto !important;
+      transform: none !important;
+      backface-visibility: visible !important;
+      box-shadow: none !important;
+      padding: 8mm 4mm !important;
+      page-break-after: always !important;
+      break-after: page !important;
+      page-break-inside: avoid !important;
+      display: block !important;
+    }
+    .face.back, .face.front {
+      display: block !important;
+      transform: none !important;
+    }
+
+    /* Footer positions become inline */
+    .footer-mark, .left-footer, .eu-disclaimer {
+      position: static !important;
+      margin-top: 10mm !important;
+      left: auto !important;
+      right: auto !important;
+      bottom: auto !important;
+    }
+    .footer-mark { display: flex !important; }
+
+    /* TOC banner becomes inline */
+    .toc-banner {
+      position: static !important;
+      width: 100% !important;
+      margin: 8mm 0 !important;
+      left: auto !important;
+      right: auto !important;
+      bottom: auto !important;
+      height: 60mm !important;
+    }
+
+    /* Make stat grid breathe */
+    .stat-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 4mm !important; margin-top: 8mm !important; }
+    .photo-grid { grid-template-columns: repeat(4, 1fr) !important; gap: 3mm !important; }
+  }
+
+  /* ---------- STAT GRID (key numbers on the cover) ---------- */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 46px;
+  }
+  .stat {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px 16px;
+    text-align: left;
+  }
+  .stat .n {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 900;
+    font-size: 30px;
+    color: var(--green);
+    line-height: 1;
+    letter-spacing: -1px;
+  }
+  .stat .l {
+    margin-top: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--soft);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    line-height: 1.3;
+  }
+  .stat:nth-child(2) .n { color: var(--pink); }
+  .stat:nth-child(3) .n { color: var(--blue); }
+
+  /* ---------- TOC (static left) ---------- */
+  .static-left {
+    position: absolute;
+    top: 0; left: 0;
+    width: 50%;
+    height: 100%;
+    background: var(--paper);
+    padding: 60px 70px;
+    overflow: hidden;
+    z-index: 1;
+    box-shadow: inset -14px 0 24px rgba(0,0,0,0.05);
+  }
+
+  /* ---------- GALLERY (static right, visible after all chapters turned) ---------- */
+  .static-right {
+    position: absolute;
+    top: 0; right: 0;
+    width: 50%;
+    height: 100%;
+    background: var(--paper);
+    padding: 60px 70px;
+    overflow: hidden;
+    z-index: 1;
+    box-shadow: inset 14px 0 24px rgba(0,0,0,0.05);
+  }
+  .toc { list-style: none; padding: 0; margin-top: 20px; }
+  .toc li {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 4px;
+    border-bottom: 1px solid var(--line);
+  }
+  .toc li:last-child { border-bottom: none; }
+  .toc .toc-num .badge-num {
+    width: 40px; height: 40px;
+    font-size: 13px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  }
+  .toc .toc-body { flex: 1; min-width: 0; }
+  .toc-title {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+  .toc-meta {
+    font-size: 11px;
+    color: var(--soft);
+    margin-top: 3px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+
+  /* ---------- BADGES ---------- */
+  .badge-num {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: var(--green);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 22px;
+    box-shadow: 0 6px 16px rgba(46,184,114,0.3);
+  }
+  .badge-num.pink { background: var(--pink); box-shadow: 0 6px 16px rgba(250,137,210,0.35); }
+  .badge-num.yellow { background: var(--yellow); color: var(--ink); box-shadow: 0 6px 16px rgba(249,199,36,0.35); }
+  .badge-num.orange { background: var(--orange); box-shadow: 0 6px 16px rgba(243,112,48,0.35); }
+  .badge-num.blue { background: var(--blue); box-shadow: 0 6px 16px rgba(56,182,255,0.35); }
+
+  /* ---------- FOOTER MARK (always left-aligned, with banner-style separator above) ---------- */
+  .footer-mark {
+    position: absolute;
+    bottom: 40px;
+    left: 70px;
+    right: 70px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--softer);
+    line-height: 1.4;
+    justify-content: flex-start;
+  }
+  .footer-mark.left-page,
+  .footer-mark.right-page { justify-content: flex-start; text-align: left; }
+
+  /* visual separator above the footer: curved line ending in a circle, banner motif */
+  .footer-mark::before {
+    content: '';
+    position: absolute;
+    top: -18px;
+    left: 0;
+    right: 30px;
+    height: 2px;
+    background: var(--accent, var(--green));
+    border-radius: 1px;
+    opacity: 0.55;
+  }
+  .footer-mark::after {
+    content: '';
+    position: absolute;
+    top: -25px;
+    right: 0;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--accent, var(--green));
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .logo-img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-image: url('../../CommonVisuals/youthailab_rounded.png');
+    background-size: cover;
+    background-position: center;
+    background-color: var(--paper);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    display: inline-block;
+    flex-shrink: 0;
+  }
+  .logo-img.big { width: 90px; height: 90px; box-shadow: 0 6px 18px rgba(0,0,0,0.15); }
+  .logo-img.small { width: 22px; height: 22px; }
+
+  /* team avatar styled after the lab logo's multi-ring pill frame (yellow inner, blue+pink outer) */
+  .team-avatar {
+    position: absolute;
+    width: 84px;
+    height: 84px;
+    background: #fff;
+    border-radius: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 46px;
+    line-height: 1;
+    box-shadow:
+      inset 0 0 0 3px var(--yellow),
+      0 0 0 3px #fff,
+      0 0 0 6px var(--pink),
+      0 0 0 9px #fff,
+      0 0 0 12px var(--blue),
+      0 10px 26px rgba(0,0,0,0.12);
+  }
+
+  /* placeholder for the partner lab's own logo, filled by the partner */
+  .lab-logo {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px dashed var(--line);
+    background: var(--bg);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    font-weight: 700;
+    color: var(--ink);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    flex-shrink: 0;
+    line-height: 1;
+    text-align: center;
+    padding: 4px;
+    font-style: normal;
+  }
+  .lab-logo.big {
+    width: 100px;
+    height: 100px;
+    font-size: 11px;
+    padding: 10px;
+  }
+  .lab-logo.small {
+    width: 22px;
+    height: 22px;
+    font-size: 6px;
+    padding: 2px;
+  }
+
+  .columns-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  /* ---------- MENTORS' WORD + QUOTE (shared format) ---------- */
+  .mentors-word,
+  .quote-fillable {
+    background: var(--accent-soft, var(--green-soft));
+    border-left: 4px solid var(--accent, var(--green));
+    border-radius: 12px;
+    padding: 22px 26px;
+    margin-top: 4px;
+    position: relative;
+  }
+  .mentors-word::before,
+  .quote-fillable::before {
+    content: '"';
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: 70px;
+    color: var(--accent, var(--green));
+    opacity: 0.25;
+    position: absolute;
+    top: -8px;
+    left: 14px;
+    line-height: 1;
+  }
+  .mentors-word .mw-text,
+  .quote-fillable .q-text {
+    color: var(--ink);
+    font-family: 'Ambiguity', 'Inter', system-ui, sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 1.5;
+    font-style: normal;
+    padding-left: 36px;
+  }
+  .mentors-word .mw-sign,
+  .quote-fillable .q-cite {
+    margin-top: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--accent-deep, var(--green-deep));
+    letter-spacing: 0.08em;
+    text-align: right;
+    font-style: normal;
+  }
+
+  /* ---------- GALLERY (last page) ---------- */
+  .gallery {
+    margin-top: 28px;
+    padding-top: 22px;
+    border-top: 2px dashed var(--line);
+  }
+  .gallery-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    gap: 12px;
+  }
+  .gallery-head h4 {
+    font-weight: 800;
+    font-size: 17px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .gallery-head .meta {
+    font-size: 11px;
+    color: var(--soft);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .gallery-item {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 10px;
+    text-align: left;
+    transition: transform 0.15s, box-shadow 0.15s;
+    cursor: pointer;
+  }
+  .gallery-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+  }
+  .gallery-item .thumb {
+    aspect-ratio: 4/3;
+    border-radius: 8px;
+    background: var(--green-soft);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+  .gallery-item .thumb::before, .gallery-item .thumb::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+  }
+  .gallery-item .thumb::before {
+    width: 60px; height: 60px;
+    background: var(--green);
+    opacity: 0.55;
+    top: -12px; right: -12px;
+  }
+  .gallery-item .thumb::after {
+    width: 40px; height: 40px;
+    background: var(--yellow);
+    opacity: 0.7;
+    bottom: -8px; left: 18px;
+  }
+  .gallery-item.pink .thumb { background: var(--pink-soft); }
+  .gallery-item.pink .thumb::before { background: var(--pink); }
+  .gallery-item.pink .thumb::after { background: var(--orange); }
+  .gallery-item.blue .thumb { background: var(--blue-soft); }
+  .gallery-item.blue .thumb::before { background: var(--blue); }
+  .gallery-item.blue .thumb::after { background: var(--green); }
+  .gallery-item.orange .thumb { background: var(--orange-soft); }
+  .gallery-item.orange .thumb::before { background: var(--orange); }
+  .gallery-item.orange .thumb::after { background: var(--pink); }
+  .gallery-item .gal-num {
+    position: absolute;
+    top: 8px; left: 8px;
+    background: rgba(255,255,255,0.92);
+    color: var(--ink);
+    padding: 3px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    z-index: 2;
+  }
+  .gallery-item .gal-meta {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--soft);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .gallery-item .gal-title {
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--ink);
+    margin-top: 4px;
+  }
+  .gallery-item.empty {
+    background: var(--bg);
+    border: 2px dashed var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: var(--ink);
+    font-style: normal;
+    font-size: 12px;
+    text-align: center;
+    padding: 18px 12px;
+    min-height: 100%;
+  }
+  .gallery-item.empty .plus {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--green);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    box-shadow: 0 4px 10px rgba(126,217,87,0.3);
+  }
+
+  /* ---------- PHOTO GRID (Instagram-style, just images) ---------- */
+  .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .photo {
+    aspect-ratio: 1;
+    border-radius: 10px;
+    background: var(--green-soft);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.15s;
+  }
+  .photo:hover { transform: scale(1.04); }
+  .photo::before, .photo::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+  }
+  .photo::before {
+    width: 60%; height: 60%;
+    background: var(--green);
+    opacity: 0.55;
+    top: -18%;
+    right: -18%;
+  }
+  .photo::after {
+    width: 40%; height: 40%;
+    background: var(--yellow);
+    opacity: 0.75;
+    bottom: -10%;
+    left: 22%;
+  }
+  .photo.pink { background: var(--pink-soft); }
+  .photo.pink::before { background: var(--pink); }
+  .photo.pink::after { background: var(--orange); }
+  .photo.yellow { background: var(--yellow-soft); }
+  .photo.yellow::before { background: var(--yellow); }
+  .photo.yellow::after { background: var(--green); }
+  .photo.blue { background: var(--blue-soft); }
+  .photo.blue::before { background: var(--blue); }
+  .photo.blue::after { background: var(--pink); }
+  .photo.orange { background: var(--orange-soft); }
+  .photo.orange::before { background: var(--orange); }
+  .photo.orange::after { background: var(--blue); }
+  .photo.green { background: var(--green-soft); }
+
+  .photo.add {
+    background: var(--bg);
+    border: 2px dashed var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .photo.add::before, .photo.add::after { display: none; }
+  .photo.add .plus {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--green);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 700;
+    box-shadow: 0 4px 10px rgba(126,217,87,0.3);
+  }
+
+  /* ---------- PERIOD PILL ---------- */
+  .period-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 28px;
+    padding: 0 6px 0 14px;
+    background: var(--orange-soft);
+    color: var(--orange);
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    margin-left: 10px;
+    vertical-align: middle;
+    line-height: 1;
+  }
+  .period-pill .p-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 20px;
+    min-width: 30px;
+    padding: 0 8px;
+    background: #fff;
+    color: var(--orange);
+    border-radius: 10px;
+    font-weight: 800;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    line-height: 1;
+  }
+  .period-pill .p-num.empty {
+    background: #fff;
+    color: var(--orange);
+    border: 1.5px dashed var(--orange);
+    font-weight: 700;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  /* country pill: same shape, blue theme so it visually distinguishes from period */
+  .country-pill {
+    background: var(--blue-soft);
+    color: var(--blue-deep);
+  }
+  .country-pill .p-num {
+    background: #fff;
+    color: var(--blue-deep);
+  }
+  .country-pill .p-num.empty {
+    background: #fff;
+    color: var(--blue-deep);
+    border: 1.5px dashed var(--blue-deep);
+  }
+
+  .header-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 0;
+  }
+
+  .left-footer {
+    position: absolute;
+    bottom: 110px;
+    left: 70px;
+    right: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--softer);
+  }
+
+  /* ---------- TOC BANNER (above left-footer on the TOC page) ---------- */
+  .toc-banner {
+    position: absolute;
+    bottom: 155px;
+    left: 70px;
+    right: 70px;
+    height: 180px;
+    background-image: url('../../CommonVisuals/banner.png');
+    background-size: cover;
+    background-position: center;
+    border-radius: 14px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  }
+
+  /* ---------- EU DISCLAIMER ---------- */
+  .eu-disclaimer {
+    position: absolute;
+    bottom: 28px;
+    left: 70px;
+    right: 70px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+  }
+  .eu-flag {
+    width: 60px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .eu-disclaimer .text {
+    font-size: 9px;
+    line-height: 1.55;
+    color: var(--soft);
+    font-weight: 400;
+    text-align: justify;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+  .eu-disclaimer .text strong {
+    font-weight: 700;
+    color: var(--ink);
+  }
+</style>
+</head>
+<body>
+
+<div class="stage">
+
+  <div class="book" id="book">
+    <div class="book-base"></div>
+
+    <!-- STATIC LEFT : table of contents of this story -->
+    <div class="static-left">
+      <span class="lab-logo big" style="position: absolute; top: 90px; right: 70px; width: 210px; height: 140px; border-radius: 0; border: none; background-image: url('../../CommonVisuals/LogoLabFrance.png'); background-size: contain; background-repeat: no-repeat; background-position: center; background-color: transparent; box-shadow: none; color: transparent;"></span>
+
+      <div class="header-row">
+        <span class="eyebrow">Inside this story</span>
+        <span class="period-pill">Period <span class="p-num empty">--</span></span>
+        <span class="period-pill country-pill">Country <span class="p-num empty">--</span></span>
+      </div>
+
+      <h2 class="entry-title" style="font-size: 34px;">A success story<br>in <em>five chapters.</em></h2>
+
+      <p style="margin-top: 12px; color: var(--soft); font-size: 14px; line-height: 1.5;">
+        From the field. What AI looks like in young hands.
+      </p>
+
+      <ul class="toc">
+        <li>
+          <div class="toc-num"><span class="badge-num">01</span></div>
+          <div class="toc-body">
+            <div class="toc-title">Where it started</div>
+            <div class="toc-meta">what was at stake, who they were, the goal</div>
+          </div>
+        </li>
+        <li>
+          <div class="toc-num"><span class="badge-num pink">02</span></div>
+          <div class="toc-body">
+            <div class="toc-title">What we tried</div>
+            <div class="toc-meta">the bet, the setup, the video</div>
+          </div>
+        </li>
+        <li>
+          <div class="toc-num"><span class="badge-num yellow">03</span></div>
+          <div class="toc-body">
+            <div class="toc-title">What unfolded</div>
+            <div class="toc-meta">what surprised, a challenge, a quote, productions</div>
+          </div>
+        </li>
+        <li>
+          <div class="toc-num"><span class="badge-num blue">04</span></div>
+          <div class="toc-body">
+            <div class="toc-title">The shift</div>
+            <div class="toc-meta">what participants can do now, the numbers, the skills</div>
+          </div>
+        </li>
+        <li>
+          <div class="toc-num"><span class="badge-num orange">05</span></div>
+          <div class="toc-body">
+            <div class="toc-title">Where it goes from here</div>
+            <div class="toc-meta">sustaining, replication, a word from the mentors</div>
+          </div>
+        </li>
+      </ul>
+
+      <div class="toc-banner"></div>
+
+      <div class="left-footer" style="justify-content: flex-start;">
+        <span style="display: flex; align-items: center; gap: 10px;">
+          <span class="logo-img small"></span>
+          Youth Ai Lab · <a href="https://youth-ai-lab.eu/" target="_blank" rel="noopener" style="color: inherit; text-decoration: underline;">https://youth-ai-lab.eu/</a>
+        </span>
+      </div>
+
+      <div class="eu-disclaimer">
+        <svg class="eu-flag" viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <path id="eustar" d="M0,-2.4 L0.55,-0.74 L2.28,-0.74 L0.88,0.28 L1.41,1.94 L0,0.92 L-1.41,1.94 L-0.88,0.28 L-2.28,-0.74 L-0.55,-0.74 Z" />
+          </defs>
+          <rect width="60" height="40" fill="#003399"/>
+          <g fill="#FFCC00">
+            <use href="#eustar" transform="translate(30 8)"/>
+            <use href="#eustar" transform="translate(36 9.6)"/>
+            <use href="#eustar" transform="translate(40.4 14)"/>
+            <use href="#eustar" transform="translate(42 20)"/>
+            <use href="#eustar" transform="translate(40.4 26)"/>
+            <use href="#eustar" transform="translate(36 30.4)"/>
+            <use href="#eustar" transform="translate(30 32)"/>
+            <use href="#eustar" transform="translate(24 30.4)"/>
+            <use href="#eustar" transform="translate(19.6 26)"/>
+            <use href="#eustar" transform="translate(18 20)"/>
+            <use href="#eustar" transform="translate(19.6 14)"/>
+            <use href="#eustar" transform="translate(24 9.6)"/>
+          </g>
+        </svg>
+        <p class="text">
+          <strong>Funded by the European Union.</strong> Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or the European Education and Culture Executive Agency (EACEA). Neither the European Union nor EACEA can be held responsible for them.
+        </p>
+      </div>
+    </div>
+
+    <!-- SHEET 0 : COVER (front) ↔ CHAPTER 01 (back) -->
+    <div class="sheet" data-i="0">
+      <div class="face front">
+        <div class="team-avatar" style="top: 115px; right: 90px;">
+          <span>👾</span>
+        </div>
+
+        <div class="header-row">
+          <span class="eyebrow">Youth Ai Lab · a success story</span>
+          <span class="period-pill">Period <span class="p-num empty">--</span></span>
+          <span class="period-pill country-pill">Country <span class="p-num empty">--</span></span>
+        </div>
+
+        <h1 class="title">Story title<br>on <em>two lines.</em></h1>
+
+        <p style="margin-top: 14px; margin-bottom: 24px; color: var(--soft); font-size: 14px; line-height: 1.55;">The return of the Pacman's — Level 2 unlocked: The fortress of algorithms.</p>
+
+        <div class="cover-fields" style="grid-template-columns: 1fr 1fr;">
+          <div class="cf"><span class="cf-key">Period dates</span><span class="fillable-inline">MMM to MMM YYYY</span></div>
+          <div class="cf"><span class="cf-key">Story written on</span><span class="fillable-inline">DD MMM YYYY</span></div>
+        </div>
+
+        <div class="upload" style="margin: 26px 0; border: none; box-shadow: inset 0 0 0 3px var(--green), inset 0 0 0 6px #fff, inset 0 0 0 9px var(--orange), inset 0 0 0 12px #fff, inset 0 0 0 15px var(--pink), 0 12px 28px rgba(0,0,0,0.10); cursor: default;"><span>hero image</span></div>
+
+        <div class="stat-grid">
+          <div class="stat"><div class="n">--</div><div class="l">young people involved</div></div>
+          <div class="stat"><div class="n">--</div><div class="l">workshops in the period</div></div>
+          <div class="stat"><div class="n">--</div><div class="l">total hours</div></div>
+        </div>
+
+        <div class="footer-mark right-page">
+          <span class="logo-img small"></span>
+          Success Story · The return of the Pacman's
+        </div>
+
+        <div class="corner-fold corner-next" data-action="next"></div>
+      </div>
+
+      <div class="face back ch-01">
+        <div class="header-row">
+          <span class="eyebrow">Chapter 01</span>
+          <span class="period-pill">Period <span class="p-num empty">--</span></span>
+          <span class="period-pill country-pill">Country <span class="p-num empty">--</span></span>
+        </div>
+
+        <h2 class="entry-title">How it <em>began.</em></h2>
+
+        <div class="q-block">
+          <span class="q-label"><span class="q-num">01</span>What was at stake for these young people</span>
+          <p class="fillable tall">Write here.</p>
+        </div>
+
+        <div class="q-block">
+          <span class="q-label"><span class="q-num">02</span>Who they were, and what they came in with</span>
+          <p class="fillable">Write here.</p>
+        </div>
+
+        <div class="q-block">
+          <span class="q-label"><span class="q-num">03</span>The goal across the period</span>
+          <p class="fillable">Write here.</p>
+        </div>
+
+        <div class="footer-mark left-page">
+          <span class="logo-img small"></span>
+          Youth Ai Lab · Young Open Understanding of Technology and Human AI Learning
+        </div>
+
+        <div class="corner-fold corner-prev" data-action="prev"></div>
+      </div>
+    </div>
+
+    <!-- SHEET 1 : CHAPTER 02 (front) ↔ CHAPTER 03 (back) -->
+    <div class="sheet" data-i="1">
+      <div class="face front ch-02">
+        <div class="header-row">
+          <span class="eyebrow">Chapter 02</span>
+          <span class="period-pill">Period <span class="p-num empty">--</span></span>
+          <span class="period-pill country-pill">Country <span class="p-num empty">--</span></span>
+        </div>
+
+        <h2 class="entry-title">What <em>we tried.</em></h2>
+
+        <div class="q-block">
+          <span class="q-label"><span class="q-num">01</span>The bet · the unconventional choice this lab made</span>
+          <p class="fillable short">Write here.</p>
+        </div>
+
+        <div class="q-block">
+          <span class="q-label"><span class="q-num">02</span>The approach across the sessions</span>
+          <p class="fillable tall">Write here.</p>
+        </div>
+
+        <div class="q-block">
+          <span class="q-label"><span class="q-num">03</span>A representative moment in motion</span>
+          <div class="video" style="border: none; box-shadow: inset 0 0 0 3px var(--blue), inset 0 0 0 7px #fff, inset 0 0 0 10px var(--green), 0 12px 28px rgba(0,0,0,0.12); margin: 0;">
+            <span class="v-corner">video</span>
+            <div class="play"></div>
+            <span class="v-meta">drop a video file or paste a link</span>
+          </div>
+        </div>
+
+        <div class="footer-mark right-page">
+          <span class="logo-img small"></span>
+          Success Story · The return of the Pacman's
+        </div>
+
+        <div class="corner-fold corner-next" data-action="next"></div>
+      </div>
+
+      <div class="face back ch-03">
+        <div class="header-row">
+          <span class="eyebrow">Chapter 03</span>
+          <span class="period-pill">Period <span class="p-num empty">--</span></span>
+          <span class="period-pill country-pill">Country <span class="p-num empty">--</span></span>
+        </div>
+
+        <h2 class="entry-title">What <em>unfolded.</em></h2>
+
+        <div class="q-block">
+          <span class="q-label"><span class="q-num">01</span>What surprised the team · what did not match the plan</span>
+          <p class="fillable">Write here.</p>
+        </div>
+
+        <div class="q-block">
+          <span class="q-label"><span class="q-num">02</span>A challenge along the way</span>
+          <p class="fillable">Write here.</p>
+        </div>
+
+        <div class="q-block">
+          <span class="q-label"><span class="q-num">03</span>A young person said</span>
+          <div class="quote-fillable">
+            <div class="q-text">The quote, exactly as it was said.</div>
+            <div class="q-cite">— first name, age</div>
+          </div>
+        </div>
+
+        <div class="q-block">
+          <span class="q-label"><span class="q-num">04</span>What the young people produced</span>
+          <div class="columns-2" style="gap: 28px;">
+            <div class="upload upload-small" style="border: none; box-shadow: inset 0 0 0 3px var(--orange), inset 0 0 0 6px #fff, inset 0 0 0 9px var(--blue), 0 10px 22px rgba(0,0,0,0.10); margin: 0; cursor: default;"><span class="upload-icon">image 1</span></div>
+            <div class="upload upload-small" style="border: none; box-shadow: inset 0 0 0 3px var(--pink), inset 0 0 0 6px #fff, inset 0 0 0 9px var(--green), 0 10px 22px rgba(0,0,0,0.10); margin: 0; cursor: default;"><span class="upload-icon">image 2</span></div>
+          </div>
+        </div>
+
+        <div class="footer-mark left-page">
+          <span class="logo-img small"></span>
+          Youth Ai Lab · Young Open Understanding of Technology and Human AI Learning
+        </div>
+
+        <div class="corner-fold corner-prev" data-action="prev"></div>
+      </div>
+    </div>
+
+    <!-- SHEET 2 : CHAPTER 04 (front) ↔ CHAPTER 05 (back) -->
+    <div class="sheet" data-i="2">
+      <div class="face front ch-04">
+        <div class="header-row">
+          <span class="eyebrow">Chapter 04</span>
+          <span class="period-pill">Period <span class="p-num empty">--</span></span>
+          <span class="period-pill country-pill">Country <span class="p-num empty">--</span></span>
+        </div>
+
+        <h2 class="entry-title">The <em>shift.</em></h2>
+
+        <div class="q-block">
+          <span class="q-label"><span class="q-num">01</span>What participants can do now that they could not before</span>
+          <p class="fillable tall">Write here.</p>
+        </div>
+
+        <div class="q-block">
+          <span class="q-label"><span class="q-num">02</span>Numbers that show the shift</span>
+          <div class="fillable-row"><span class="row-num">1</span><span class="fillable short">a number that matters</span></div>
+          <div class="fillable-row"><span class="row-num pink">2</span><span class="fillable short">a second number</span></div>
+          <div class="fillable-row"><span class="row-num yellow">3</span><span class="fillable short">a third number</span></div>
+        </div>
+
+        <div class="q-block">
+          <span class="q-label"><span class="q-num">03</span>Skills addressed</span>
+          <div class="skill-checks">
+            <span class="skill-check">data literacy</span>
+            <span class="skill-check">critical thinking</span>
+            <span class="skill-check">collaboration</span>
+            <span class="skill-check">prompting</span>
+            <span class="skill-check">algorithmic thinking</span>
+            <span class="skill-check">creativity</span>
+            <span class="skill-check">debugging</span>
+            <span class="skill-check">prioritisation</span>
+          </div>
+        </div>
+
+        <div class="footer-mark right-page">
+          <span class="logo-img small"></span>
+          Success Story · The return of the Pacman's
+        </div>
+
+        <div class="corner-fold corner-next" data-action="next"></div>
+      </div>
+
+      <div class="face back ch-05">
+        <div class="header-row">
+          <span class="eyebrow">Chapter 05</span>
+          <span class="period-pill">Period <span class="p-num empty">--</span></span>
+          <span class="period-pill country-pill">Country <span class="p-num empty">--</span></span>
+        </div>
+
+        <h2 class="entry-title">Where it goes <em>from here.</em></h2>
+
+        <div class="q-block">
+          <span class="q-label"><span class="q-num">01</span>How the lesson will carry into the next period</span>
+          <p class="fillable tall">Write here.</p>
+        </div>
+
+        <div class="q-block">
+          <span class="q-label"><span class="q-num">02</span>For other labs picking this up</span>
+          <p class="fillable tall">Write here.</p>
+        </div>
+
+        <div class="q-block">
+          <span class="q-label"><span class="q-num">03</span>A word from the mentors</span>
+          <div class="mentors-word">
+            <div class="mw-text">A short reflection from the mentor team, written in their voice.</div>
+            <div class="mw-sign">— the mentors</div>
+          </div>
+        </div>
+
+        <div class="footer-mark left-page">
+          <span class="logo-img small"></span>
+          Youth Ai Lab · Young Open Understanding of Technology and Human AI Learning
+        </div>
+
+        <div class="corner-fold corner-prev" data-action="prev"></div>
+      </div>
+    </div>
+
+    <!-- STATIC RIGHT : photo gallery of the period -->
+    <div class="static-right">
+      <div class="header-row">
+        <span class="eyebrow">Photo gallery</span>
+        <span class="period-pill">Period <span class="p-num empty">--</span></span>
+      </div>
+
+      <h2 class="entry-title">Moments from<br>the <em>period.</em></h2>
+
+      <p style="margin: 12px 0 22px; color: var(--soft); font-size: 14px; line-height: 1.55;">
+        A visual trace of the activities, faces and productions that marked this reporting period.
+      </p>
+
+      <div class="photo-grid">
+        <div class="photo green"></div>
+        <div class="photo pink"></div>
+        <div class="photo yellow"></div>
+        <div class="photo blue"></div>
+        <div class="photo orange"></div>
+        <div class="photo pink"></div>
+        <div class="photo blue"></div>
+        <div class="photo green"></div>
+        <div class="photo orange"></div>
+        <div class="photo yellow"></div>
+        <div class="photo green"></div>
+        <div class="photo blue"></div>
+      </div>
+
+      <button class="pdf-download" onclick="window.print()">
+        <span class="icon">↓</span>
+        Download this story as PDF
+      </button>
+
+      <div class="footer-mark right-page">
+        <span class="logo-img small"></span>
+        Success Story · The return of the Pacman's
+      </div>
+    </div>
+
+  </div>
+
+  <button class="nav-btn prev" id="prev" aria-label="Previous page">
+    <svg viewBox="0 0 36 36">
+      <circle class="arr-dot" cx="4" cy="18" r="3.5"/>
+      <path class="arr-chevron" d="M20 11 L12 18 L20 25 Z"/>
+      <path class="arr-line" d="M20 18 H33"/>
+    </svg>
+  </button>
+  <button class="nav-btn next" id="next" aria-label="Next page">
+    <svg viewBox="0 0 36 36">
+      <path class="arr-line" d="M3 18 H16"/>
+      <path class="arr-chevron" d="M16 11 L24 18 L16 25 Z"/>
+      <circle class="arr-dot" cx="32" cy="18" r="3.5"/>
+    </svg>
+  </button>
+
+  <div class="indicator">
+    <strong id="page-current">1</strong>
+    <span>/</span>
+    <span id="page-total">6</span>
+    <span class="dot"></span>
+    <span class="hint-meta">click edges or use ← →</span>
+  </div>
+
+</div>
+
+<script>
+  /* ---------- Responsive scale ---------- */
+  function fit() {
+    const scale = Math.min(window.innerWidth / 1500, window.innerHeight / 950);
+    document.documentElement.style.setProperty('--book-scale', scale.toFixed(4));
+  }
+  window.addEventListener('resize', fit);
+  window.addEventListener('orientationchange', fit);
+  fit();
+
+  /* ---------- Page turning ---------- */
+  const sheets = Array.from(document.querySelectorAll('.sheet'));
+  const total = sheets.length * 2 + 1; // +1 for the static gallery on the right
+  document.getElementById('page-total').textContent = total;
+  const currentEl = document.getElementById('page-current');
+
+  let turned = 0;
+  let busy = false;
+
+  const prevBtn = document.getElementById('prev');
+  const nextBtn = document.getElementById('next');
+
+  function updateArrows() {
+    prevBtn.classList.toggle('disabled', turned <= 0);
+    nextBtn.classList.toggle('disabled', turned >= sheets.length);
+  }
+
+  function update() {
+    sheets.forEach((sheet, i) => {
+      if (i < turned) {
+        sheet.classList.add('turned');
+        sheet.style.zIndex = 10 + i;
+      } else {
+        sheet.classList.remove('turned');
+        sheet.style.zIndex = 100 + (sheets.length - i);
+      }
+    });
+    currentEl.textContent = turned * 2 + 1;
+    updateArrows();
+  }
+
+  function next() {
+    if (busy || turned >= sheets.length) return;
+    busy = true;
+    const turning = sheets[turned];
+    turning.style.zIndex = 999;
+    turning.classList.add('turning');
+    turned++;
+    sheets.forEach((sheet, i) => { if (i < turned) sheet.classList.add('turned'); });
+    setTimeout(() => { turning.classList.remove('turning'); busy = false; update(); }, 720);
+    currentEl.textContent = turned * 2 + 1;
+    updateArrows();
+  }
+
+  function prev() {
+    if (busy || turned <= 0) return;
+    busy = true;
+    turned--;
+    const turning = sheets[turned];
+    turning.style.zIndex = 999;
+    turning.classList.add('turning');
+    turning.classList.remove('turned');
+    setTimeout(() => { turning.classList.remove('turning'); busy = false; update(); }, 720);
+    currentEl.textContent = turned * 2 + 1;
+    updateArrows();
+  }
+
+  document.getElementById('next').addEventListener('click', next);
+  document.getElementById('prev').addEventListener('click', prev);
+
+  /* sheets handle clicks: only the bottom corner area (matching the visible fold) triggers a page turn */
+  sheets.forEach(sheet => {
+    sheet.addEventListener('click', (e) => {
+      if (e.target.closest('.nav-btn')) return;
+      const rect = sheet.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      // accept clicks only in the bottom ~90px band of the page, in the outer 90px area
+      const inBottomBand = y > rect.height - 95;
+      if (!inBottomBand) return;
+      if (sheet.classList.contains('turned')) {
+        // turned sheet sits on the LEFT page → clicking near its outer (left) corner goes back
+        if (x < 95) prev();
+      } else {
+        // unturned sheet sits on the RIGHT page → clicking near its outer (right) corner goes forward
+        if (x > rect.width - 95) next();
+      }
+    });
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+  });
+
+  /* scroll wheel: accumulate deltaY then turn a page when threshold is reached */
+  let wheelAccum = 0;
+  let wheelTimer = null;
+  document.addEventListener('wheel', (e) => {
+    if (busy) return;
+    wheelAccum += e.deltaY;
+    clearTimeout(wheelTimer);
+    wheelTimer = setTimeout(() => { wheelAccum = 0; }, 200);
+    const threshold = 60;
+    if (wheelAccum > threshold) { wheelAccum = 0; next(); }
+    else if (wheelAccum < -threshold) { wheelAccum = 0; prev(); }
+  }, { passive: true });
+
+  /* ---------- Skill check toggle ---------- */
+  document.querySelectorAll('.skill-check').forEach(c => {
+    c.addEventListener('click', (e) => {
+      e.stopPropagation();
+      c.classList.toggle('checked');
+    });
+  });
+
+  update();
+</script>
+
+</body>
+</html>
