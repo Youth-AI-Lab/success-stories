@@ -59,12 +59,14 @@
   .card.spain    { border-color: var(--orange); box-shadow: 0 0 0 4px #fff, 0 0 0 7px var(--blue),   0 8px 22px rgba(56,182,255,0.18); }
   .card.belgium  { border-color: var(--blue);   box-shadow: 0 0 0 4px #fff, 0 0 0 7px var(--yellow), 0 8px 22px rgba(249,199,36,0.18); }
   .card.template { border-color: var(--pink);   box-shadow: 0 0 0 4px #fff, 0 0 0 7px var(--green),  0 8px 22px rgba(126,217,87,0.18); }
+  .card.postcard-card { border-color: var(--orange); box-shadow: 0 0 0 4px #fff, 0 0 0 7px var(--yellow), 0 8px 22px rgba(249,199,36,0.18); }
   .card:hover { transform: translateY(-4px); }
   .card.france:hover   { box-shadow: 0 0 0 4px #fff, 0 0 0 7px var(--orange), 0 16px 36px rgba(243,112,48,0.32); }
   .card.italy:hover    { box-shadow: 0 0 0 4px #fff, 0 0 0 7px var(--pink),   0 16px 36px rgba(250,137,210,0.32); }
   .card.spain:hover    { box-shadow: 0 0 0 4px #fff, 0 0 0 7px var(--blue),   0 16px 36px rgba(56,182,255,0.32); }
   .card.belgium:hover  { box-shadow: 0 0 0 4px #fff, 0 0 0 7px var(--yellow), 0 16px 36px rgba(249,199,36,0.32); }
   .card.template:hover { box-shadow: 0 0 0 4px #fff, 0 0 0 7px var(--green),  0 16px 36px rgba(126,217,87,0.32); }
+  .card.postcard-card:hover { box-shadow: 0 0 0 4px #fff, 0 0 0 7px var(--yellow), 0 16px 36px rgba(249,199,36,0.32); }
   .card .flag {
     display: inline-flex; align-items: center; justify-content: center;
     width: 52px; height: 52px; border-radius: 14px;
@@ -161,12 +163,18 @@
     Success stories written by the four Youth Ai Lab partner labs across Europe. Each carnet is a window on what was tried with young people, what surprised the team, and what carries forward.
   </p>
 
-  <div class="section-title">Template</div>
+  <div class="section-title">Templates &amp; formats</div>
   <div class="country-grid">
     <a class="card template" href="template/">
       <div class="flag">📓</div>
-      <div class="name">Carnet template</div>
-      <div class="tag">Reference layout · start here</div>
+      <div class="name">Success story</div>
+      <div class="tag">Deep · 5 chapters</div>
+      <div class="arrow"><svg viewBox="0 0 36 36"><path class="arr-line" d="M3 18 H18"/><path class="arr-tri" d="M16 11 L24 18 L16 25 Z"/><circle class="arr-dot" cx="32" cy="18" r="3.5"/></svg></div>
+    </a>
+    <a class="card postcard-card" href="postcards/">
+      <div class="flag">✉️</div>
+      <div class="name">Postcard</div>
+      <div class="tag">Quick · celebrated</div>
       <div class="arrow"><svg viewBox="0 0 36 36"><path class="arr-line" d="M3 18 H18"/><path class="arr-tri" d="M16 11 L24 18 L16 25 Z"/><circle class="arr-dot" cx="32" cy="18" r="3.5"/></svg></div>
     </a>
   </div>

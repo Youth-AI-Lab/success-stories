@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Youth Ai Lab Postcard (template)</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=Patrick+Hand&display=swap');
+
+  :root {
+    --bg: #f7f4e8;
+    --paper: #ffffff;
+    --ink: #1a1a1a;
+    --soft: #6c6c6c;
+    --softer: #a3a3a3;
+    --line: #ece8d8;
+    --green: #7ed957; --green-deep: #5fb83a; --green-soft: #dbffcb;
+    --pink: #fa89d2; --pink-deep: #d966ad; --pink-soft: #ffd9f2;
+    --yellow: #f9c724; --yellow-deep: #c99c00; --yellow-soft: #f9eecd;
+    --orange: #f37030; --orange-deep: #c95816; --orange-soft: #ffd5c1;
+    --blue: #38b6ff; --blue-deep: #1d8fd1; --blue-soft: #cbecff;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    background:
+      radial-gradient(ellipse at 25% 20%, var(--pink-soft) 0%, transparent 40%),
+      radial-gradient(ellipse at 75% 80%, var(--blue-soft) 0%, transparent 45%),
+      var(--bg);
+    font-family: 'Manrope', system-ui, sans-serif;
+    color: var(--ink);
+    overflow: hidden;
+  }
+
+  .stage {
+    position: fixed; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    perspective: 2400px;
+  }
+
+  /* ---------- POSTCARD ---------- */
+  .postcard {
+    position: relative;
+    width: min(82vw, 1080px);
+    aspect-ratio: 5 / 3;
+    transform-style: preserve-3d;
+    transition: transform 0.95s cubic-bezier(0.22, 0.61, 0.36, 1);
+    cursor: pointer;
+  }
+  .postcard.flipped { transform: rotateY(180deg); }
+
+  .face {
+    position: absolute; inset: 0;
+    backface-visibility: hidden;
+    background: var(--paper);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow:
+      0 24px 60px rgba(0,0,0,0.18),
+      0 0 0 3px var(--pink) inset,
+      0 0 0 6px var(--paper) inset,
+      0 0 0 9px var(--green) inset;
+  }
+  .face.back { transform: rotateY(180deg); }
+
+  /* ---------- FRONT: hero image + headline overlay ---------- */
+  .hero {
+    position: absolute; inset: 9px;
+    border-radius: 8px;
+    overflow: hidden;
+    background:
+      linear-gradient(135deg, var(--pink) 0%, var(--orange) 35%, var(--yellow) 60%, var(--green) 85%, var(--blue) 100%);
+    display: flex; align-items: flex-end;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.2) 35%, transparent 60%);
+  }
+  .hero-img-placeholder {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.85);
+    font-family: 'Patrick Hand', cursive;
+    font-size: 22px;
+    letter-spacing: 0.04em;
+  }
+
+  .stamp-corner {
+    position: absolute;
+    top: 24px; right: 24px;
+    z-index: 2;
+    transform: rotate(8deg);
+    padding: 8px 16px;
+    background: var(--paper);
+    border: 2.5px solid var(--orange);
+    border-radius: 8px;
+    box-shadow:
+      0 0 0 3px var(--paper),
+      0 0 0 5px var(--yellow);
+    color: var(--orange-deep);
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 800;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    line-height: 1.2;
+    text-align: center;
+  }
+  .stamp-corner span {
+    display: block;
+    font-family: 'Patrick Hand', cursive;
+    font-weight: 400;
+    font-size: 14px;
+    letter-spacing: 0;
+    margin-top: 2px;
+    color: var(--ink);
+  }
+
+  .headline {
+    position: relative;
+    z-index: 2;
+    padding: 0 56px 48px;
+    max-width: 80%;
+    color: #fff;
+  }
+  .greeting {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 26px;
+    margin-bottom: 6px;
+    opacity: 0.95;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.4);
+  }
+  .headline h1 {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 900;
+    font-size: clamp(32px, 4vw, 58px);
+    line-height: 0.98;
+    letter-spacing: -1.5px;
+    text-shadow: 0 4px 24px rgba(0,0,0,0.45);
+  }
+  .headline h1 em {
+    font-style: normal;
+    color: var(--yellow);
+  }
+
+  .yal-stamp {
+    position: absolute;
+    bottom: 24px; right: 24px;
+    z-index: 2;
+    display: flex; align-items: center; gap: 8px;
+    color: rgba(255,255,255,0.85);
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .yal-stamp .dot {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background-image: url('../../CommonVisuals/youthailab_rounded.png');
+    background-size: cover;
+    background-position: center;
+    background-color: var(--paper);
+  }
+
+  /* ---------- BACK: classic postcard layout ---------- */
+  .back-inner {
+    position: absolute; inset: 9px;
+    border-radius: 8px;
+    background: var(--paper);
+    padding: 32px 36px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    overflow: hidden;
+  }
+  .back-inner::before {
+    /* vertical divider down the middle, banner motif (line ending in a dot) */
+    content: '';
+    position: absolute;
+    left: 50%; top: 32px; bottom: 32px;
+    width: 2.5px;
+    background: var(--green);
+    border-radius: 2px;
+    opacity: 0.65;
+  }
+  .back-inner::after {
+    content: '';
+    position: absolute;
+    left: 50%; top: 24px;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--green);
+    transform: translateX(-50%);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+
+  /* LEFT half: the message */
+  .message {
+    display: flex; flex-direction: column;
+    padding-right: 24px;
+  }
+  .opening {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 22px;
+    color: var(--pink-deep);
+    margin-bottom: 14px;
+  }
+  .moment {
+    font-family: 'Manrope', sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--ink);
+    margin-bottom: 18px;
+    flex: 1;
+  }
+  .voice {
+    background: var(--yellow-soft);
+    border-left: 3px solid var(--yellow);
+    padding: 12px 14px;
+    border-radius: 8px;
+    margin-bottom: 14px;
+    position: relative;
+  }
+  .voice::before {
+    content: '“';
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--yellow);
+    line-height: 1;
+    position: absolute;
+    top: -4px; left: 6px;
+    opacity: 0.35;
+  }
+  .voice-text {
+    font-family: 'Manrope', sans-serif;
+    font-size: 14px;
+    line-height: 1.45;
+    color: var(--ink);
+    padding-left: 28px;
+  }
+  .voice-by {
+    margin-top: 6px;
+    padding-left: 28px;
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--yellow-deep);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .signature {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 20px;
+    color: var(--ink);
+    margin-top: auto;
+    padding-top: 8px;
+  }
+  .signature .name {
+    display: block;
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--pink-deep);
+    margin-top: 4px;
+  }
+
+  /* RIGHT half: stamp + address + tags */
+  .right-side {
+    display: flex; flex-direction: column;
+    padding-left: 24px;
+  }
+  .postage-stamp {
+    align-self: flex-end;
+    width: 100px; height: 120px;
+    background: var(--paper);
+    border-radius: 6px;
+    box-shadow:
+      0 0 0 3px var(--paper),
+      0 0 0 5px var(--blue),
+      0 0 0 8px var(--paper),
+      0 0 0 10px var(--pink),
+      0 6px 16px rgba(0,0,0,0.08);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 10px;
+    margin-bottom: 18px;
+    position: relative;
+  }
+  .postage-stamp .yal-logo {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background-image: url('../../CommonVisuals/youthailab_rounded.png');
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 8px;
+  }
+  .postage-stamp .stamp-date {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 14px;
+    color: var(--ink);
+    text-align: center;
+    line-height: 1.1;
+  }
+  .postage-stamp .stamp-date small {
+    display: block;
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 800;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--soft);
+    margin-bottom: 2px;
+  }
+
+  .address {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    border-bottom: 1.5px dotted var(--softer);
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+  }
+  .address .key {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--softer);
+    margin-bottom: 4px;
+  }
+  .address .val {
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--ink);
+  }
+  .address .meta {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--soft);
+    margin-top: 4px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .skill-tags {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    margin-top: auto;
+  }
+  .skill-tag {
+    padding: 5px 11px;
+    border-radius: 14px;
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .skill-tag:nth-child(1) { background: var(--green-soft); color: var(--green-deep); }
+  .skill-tag:nth-child(2) { background: var(--orange-soft); color: var(--orange-deep); }
+  .skill-tag:nth-child(3) { background: var(--blue-soft); color: var(--blue-deep); }
+
+  /* ---------- footer hint ---------- */
+  .hint {
+    position: fixed;
+    bottom: 24px; left: 50%;
+    transform: translateX(-50%);
+    color: var(--soft);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    background: rgba(255,255,255,0.92);
+    padding: 8px 16px;
+    border-radius: 20px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+    pointer-events: none;
+  }
+  .hint strong { color: var(--pink-deep); font-weight: 800; }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="postcard" id="postcard">
+
+    <div class="face front">
+      <div class="hero">
+        <span class="hero-img-placeholder">hero image — a moment to celebrate</span>
+        <div class="stamp-corner">
+          Period · 01
+          <span>France</span>
+        </div>
+        <div class="headline">
+          <div class="greeting">Greetings from the field,</div>
+          <h1>Headline of the<br>moment <em>we celebrate.</em></h1>
+        </div>
+        <div class="yal-stamp">
+          <span class="dot"></span>
+          Youth Ai Lab · postcard
+        </div>
+      </div>
+    </div>
+
+    <div class="face back">
+      <div class="back-inner">
+
+        <div class="message">
+          <div class="opening">Dear Youth Ai Lab,</div>
+          <p class="moment">
+            Write here what happened, in two or three lines. Present tense. Something the team will want to remember.
+            What did it look like in the room, what shifted in the air, what was the spark.
+          </p>
+          <div class="voice">
+            <div class="voice-text">A quote in someone's voice, in their words.</div>
+            <div class="voice-by">— first name, role</div>
+          </div>
+          <div class="signature">
+            Sent with care,
+            <span class="name">the team</span>
+          </div>
+        </div>
+
+        <div class="right-side">
+          <div class="postage-stamp">
+            <div class="yal-logo"></div>
+            <div class="stamp-date">
+              <small>posted on</small>
+              DD MMM YYYY
+            </div>
+          </div>
+          <div class="address">
+            <div class="key">Lab</div>
+            <div class="val">Lab name.</div>
+            <div class="meta">Country · activity area</div>
+          </div>
+          <div class="skill-tags">
+            <span class="skill-tag">skill 1</span>
+            <span class="skill-tag">skill 2</span>
+            <span class="skill-tag">skill 3</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="hint">Click the postcard to flip · <strong>recto</strong> ↔ verso</div>
+
+<script>
+  const card = document.getElementById('postcard');
+  card.addEventListener('click', () => card.classList.toggle('flipped'));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === ' ' || e.key === 'Enter' || e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+      e.preventDefault();
+      card.classList.toggle('flipped');
+    }
+  });
+</script>
+
+</body>
+</html>
