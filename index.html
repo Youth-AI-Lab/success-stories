@@ -19,7 +19,64 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { background: var(--bg); font-family: 'Manrope', system-ui, sans-serif; color: var(--ink); min-height: 100%; }
   h1, .eyebrow { font-family: 'Bricolage Grotesque', sans-serif; }
-  main { max-width: 1100px; margin: 0 auto; padding: 80px 32px; }
+  main { max-width: 1100px; margin: 0 auto; padding: 80px 32px; position: relative; }
+
+  /* floating shapes inspired by the YAL banner: dots and curving paths */
+  body::before, body::after {
+    content: '';
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(1px);
+    opacity: 0.6;
+  }
+  body::before {
+    width: 240px; height: 240px;
+    background: radial-gradient(circle, var(--pink-soft), transparent 70%);
+    top: -40px; right: -60px;
+  }
+  body::after {
+    width: 320px; height: 320px;
+    background: radial-gradient(circle, var(--blue-soft), transparent 70%);
+    bottom: -80px; left: -100px;
+  }
+  main > * { position: relative; z-index: 1; }
+
+  /* big floating colored dot accents — banner motif */
+  .deco-dot {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .deco-dot.d1 { width: 16px; height: 16px; background: var(--green); top: 120px; right: 12%; }
+  .deco-dot.d2 { width: 12px; height: 12px; background: var(--orange); top: 240px; right: 22%; }
+  .deco-dot.d3 { width: 22px; height: 22px; background: var(--yellow); top: 60px; left: 8%; }
+  .deco-dot.d4 { width: 10px; height: 10px; background: var(--pink); top: 200px; left: 32%; }
+  .deco-dot.d5 { width: 14px; height: 14px; background: var(--blue); top: 380px; left: 4%; }
+
+  /* curving path with circular ending, matches the YAL banner connections */
+  .deco-path {
+    position: absolute;
+    width: 140px; height: 80px;
+    border: 3px solid var(--green);
+    border-color: var(--green) var(--green) transparent transparent;
+    border-radius: 100% 0 0 0;
+    top: 80px;
+    right: 4%;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .deco-path::after {
+    content: '';
+    position: absolute;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--green);
+    top: -8px;
+    right: -4px;
+  }
   .eyebrow {
     display: inline-flex; align-items: center; gap: 10px;
     padding: 8px 16px; background: var(--green-soft); color: var(--green-deep);
@@ -63,6 +120,27 @@
   .card.spain .flag    { background: var(--orange-soft); }
   .card.belgium .flag  { background: var(--blue-soft); }
   .card.template .flag { background: var(--pink-soft); }
+
+  /* team avatar badge next to the card title — borrows the carnet's avatar look */
+  .card .avatar {
+    position: absolute;
+    top: 24px;
+    right: 70px;
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow:
+      inset 0 0 0 2px var(--yellow),
+      0 0 0 2px #fff,
+      0 0 0 4px var(--pink),
+      0 4px 12px rgba(0,0,0,0.08);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; line-height: 1;
+  }
+  .card.italy .avatar    { box-shadow: inset 0 0 0 2px var(--green), 0 0 0 2px #fff, 0 0 0 4px var(--orange), 0 4px 12px rgba(0,0,0,0.08); }
+  .card.france .avatar   { box-shadow: inset 0 0 0 2px var(--yellow), 0 0 0 2px #fff, 0 0 0 4px var(--pink), 0 4px 12px rgba(0,0,0,0.08); }
+  .card.spain .avatar    { box-shadow: inset 0 0 0 2px var(--orange), 0 0 0 2px #fff, 0 0 0 4px var(--green), 0 4px 12px rgba(0,0,0,0.08); }
+  .card.belgium .avatar  { box-shadow: inset 0 0 0 2px var(--blue), 0 0 0 2px #fff, 0 0 0 4px var(--yellow), 0 4px 12px rgba(0,0,0,0.08); }
   .card .name {
     font-family: 'Bricolage Grotesque', sans-serif;
     font-size: 22px; font-weight: 800; margin-bottom: 6px;
@@ -92,6 +170,13 @@
 <body>
 
 <main>
+  <span class="deco-dot d1"></span>
+  <span class="deco-dot d2"></span>
+  <span class="deco-dot d3"></span>
+  <span class="deco-dot d4"></span>
+  <span class="deco-dot d5"></span>
+  <span class="deco-path"></span>
+
   <span class="eyebrow"><span class="logo-img"></span>Youth Ai Lab</span>
   <h1>Success stories<br>from the <em>field.</em></h1>
   <p class="lead">
@@ -112,26 +197,30 @@
   <div class="country-grid">
     <a class="card france" href="france/">
       <div class="flag">🇫🇷</div>
+      <span class="avatar">👾</span>
       <div class="name">France</div>
-      <div class="tag">Centrale Lab</div>
+      <div class="tag">Pacman's</div>
       <div class="arrow">→</div>
     </a>
     <a class="card italy" href="italy/">
       <div class="flag">🇮🇹</div>
+      <span class="avatar">🦅</span>
       <div class="name">Italy</div>
-      <div class="tag">Perlatecnica</div>
+      <div class="tag">FARO</div>
       <div class="arrow">→</div>
     </a>
     <a class="card spain" href="spain/">
       <div class="flag">🇪🇸</div>
+      <span class="avatar">🦊</span>
       <div class="name">Spain</div>
-      <div class="tag">Catalonia · LLUM</div>
+      <div class="tag">UAB</div>
       <div class="arrow">→</div>
     </a>
     <a class="card belgium" href="belgium/">
       <div class="flag">🇧🇪</div>
+      <span class="avatar">🐺</span>
       <div class="name">Belgium</div>
-      <div class="tag">Wolfpack</div>
+      <div class="tag">Digitale Wolven</div>
       <div class="arrow">→</div>
     </a>
   </div>

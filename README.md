@@ -29,14 +29,14 @@ success-stories/
 │   └── …
 ├── italy/
 │   ├── index.html
-│   ├── perlatecnica-success-01/
+│   ├── faro-success-01/
 │   └── …
 ├── spain/
 │   ├── index.html
-│   └── llum-success-01/
+│   └── uab-success-01/
 ├── belgium/
 │   ├── index.html
-│   └── wolfpack-success-01/
+│   └── digitale-wolven-success-01/
 ├── success-story-template.md        Markdown source partners fill in
 └── generate-pdf.js                  Puppeteer script to export a carnet to PDF
 ```
@@ -49,14 +49,15 @@ success-stories/
 - `/{country}/{team-slug}-success-{NN}/` — a single published story
 
 Country slugs: `france`, `italy`, `spain`, `belgium` (lowercase English, no accents).
-Team slug: lowercase team identifier (`pacmans`, `perlatecnica`, `llum`, `wolfpack`).
+Team slug: lowercase team identifier (`pacmans`, `faro`, `uab`, `digitale-wolven`).
 Story number: two-digit padding (`01`, `02`, …).
 
 Examples:
 
 - `/france/pacmans-success-01/`
-- `/italy/perlatecnica-success-03/`
-- `/belgium/wolfpack-success-01/`
+- `/italy/faro-success-03/`
+- `/belgium/digitale-wolven-success-01/`
+- `/spain/uab-success-02/`
 
 ## Publishing a new story
 
