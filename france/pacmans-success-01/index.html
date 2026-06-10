@@ -1475,11 +1475,8 @@
 .face[class*="ch-0"] .key-num.blue .kn-fig{ color:var(--blue-deep); background:var(--blue-soft); }
 .face[class*="ch-0"] .key-num .kn-desc{ font-size:calc(13px*var(--fit,1)); line-height:1.3; color:var(--soft); font-weight:600; }
 /* workshop square cards (Ch02) — link out to each workshop */
-.face[class*="ch-0"] .workshops{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
-.face[class*="ch-0"] .workshop{ text-decoration:none; display:flex; flex-direction:column; gap:calc(8px*var(--fit,1)); }
-.face[class*="ch-0"] .workshop .ws-thumb{ aspect-ratio:1; border-radius:13px; background:var(--accent-soft); background-size:cover; background-position:center; box-shadow:inset 0 0 0 3px var(--accent), inset 0 0 0 6px #fff, 0 8px 18px rgba(0,0,0,0.10); display:block; transition:transform .12s ease; }
-.face[class*="ch-0"] .workshop:hover .ws-thumb{ transform:translateY(-3px); }
-.face[class*="ch-0"] .workshop .ws-name{ font-size:calc(12px*var(--fit,1)); font-weight:700; color:var(--ink); text-align:center; line-height:1.25; }
+.face[class*="ch-0"] .t-sheet{ display:inline-flex; align-items:center; gap:4px; margin-top:calc(7px*var(--fit,1)); padding:calc(4px*var(--fit,1)) 12px; border-radius:20px; background:var(--yellow-soft); color:var(--yellow-deep); font-family:'Bricolage Grotesque',sans-serif; font-size:calc(10px*var(--fit,1)); font-weight:800; letter-spacing:.04em; text-decoration:none; transition:transform .12s ease; }
+.face[class*="ch-0"] .t-sheet:hover{ transform:translateY(-1px); }
 /* lab logo on the right of the chapter header line */
 /* coloured chapter header band with white pills + coloured text */
 .face[class*="ch-0"] .header-row{ flex-wrap:nowrap; align-items:center; background:var(--accent); border-radius:16px; padding:14px 16px; gap:10px; }
@@ -1507,21 +1504,26 @@ html, body{ background:#f1f0ec; }
   html, body { -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; background:#fff !important; }
   .spine{ display:none !important; }
   .toc-banner{ height:46mm !important; }
+  /* last printed page must not force a trailing blank page */
+  .static-right{ page-break-after:avoid !important; break-after:avoid !important; }
 }
 /* country pill: FR takes the colour of its pill */
 .country-pill .p-num{ color:inherit; }
 /* skills are display-only, not clickable */
 .face[class*="ch-0"] .skill-check{ cursor:default; }
 /* images open full size on click */
-.face .upload[style*="background-image"], .face[class*="ch-0"] .ws-thumb, .static-right .photo.ph-img{ cursor:zoom-in; }
+.face .upload[style*="background-image"], .static-right .photo.ph-img{ cursor:zoom-in; }
 /* upcoming-workshops timeline (Ch05), mirrored from the postcard */
 .face[class*="ch-0"] .timeline{ position:relative; display:grid; grid-template-columns:1fr 1fr; gap:24px; padding:20px 8px 0; margin-top:6px; }
-.face[class*="ch-0"] .timeline::before{ content:''; position:absolute; top:31px; left:9%; right:9%; height:2.5px; background:repeating-linear-gradient(to right, var(--yellow) 0 8px, transparent 8px 14px); z-index:0; }
+.face[class*="ch-0"] .timeline::before{ content:''; position:absolute; top:31px; left:9%; right:9%; height:2.5px; background:repeating-linear-gradient(to right, #d4d0c6 0 8px, transparent 8px 14px); z-index:0; }
 .face[class*="ch-0"] .t-step{ position:relative; z-index:1; display:flex; flex-direction:column; align-items:center; text-align:center; padding:0 10px; }
-.face[class*="ch-0"] .t-dot{ width:22px; height:22px; border-radius:50%; background:#fff; box-shadow:0 0 0 2.5px var(--yellow), 0 0 0 5px #fff; margin-bottom:12px; position:relative; z-index:2; }
-.face[class*="ch-0"] .t-step.tomorrow .t-dot{ box-shadow:0 0 0 2.5px var(--orange), 0 0 0 5px #fff; }
-.face[class*="ch-0"] .t-when{ font-family:'Bricolage Grotesque',sans-serif; font-size:calc(10px*var(--fit,1)); font-weight:800; letter-spacing:0.12em; text-transform:uppercase; color:var(--yellow-deep); margin-bottom:5px; }
-.face[class*="ch-0"] .t-step.tomorrow .t-when{ color:var(--orange-deep); }
+.face[class*="ch-0"] .t-dot{ width:22px; height:22px; border-radius:50%; background:#fff; box-shadow:0 0 0 2.5px var(--softer), 0 0 0 5px #fff; margin-bottom:12px; position:relative; z-index:2; }
+.face[class*="ch-0"] .t-when{ font-family:'Bricolage Grotesque',sans-serif; font-size:calc(10px*var(--fit,1)); font-weight:800; letter-spacing:0.12em; text-transform:uppercase; color:var(--soft); margin-bottom:5px; }
+.face[class*="ch-0"] .t-step.c-green .t-dot{ box-shadow:0 0 0 2.5px var(--green),0 0 0 5px #fff; } .face[class*="ch-0"] .t-step.c-green .t-when{ color:var(--green-deep); } .face[class*="ch-0"] .t-step.c-green .t-sheet{ background:var(--green-soft); color:var(--green-deep); }
+.face[class*="ch-0"] .t-step.c-blue .t-dot{ box-shadow:0 0 0 2.5px var(--blue),0 0 0 5px #fff; } .face[class*="ch-0"] .t-step.c-blue .t-when{ color:var(--blue-deep); } .face[class*="ch-0"] .t-step.c-blue .t-sheet{ background:var(--blue-soft); color:var(--blue-deep); }
+.face[class*="ch-0"] .t-step.c-pink .t-dot{ box-shadow:0 0 0 2.5px var(--pink),0 0 0 5px #fff; } .face[class*="ch-0"] .t-step.c-pink .t-when{ color:var(--pink-deep); } .face[class*="ch-0"] .t-step.c-pink .t-sheet{ background:var(--pink-soft); color:var(--pink-deep); }
+.face[class*="ch-0"] .t-step.c-yellow .t-dot{ box-shadow:0 0 0 2.5px var(--yellow),0 0 0 5px #fff; } .face[class*="ch-0"] .t-step.c-yellow .t-when{ color:var(--yellow-deep); } .face[class*="ch-0"] .t-step.c-yellow .t-sheet{ background:var(--yellow-soft); color:var(--yellow-deep); }
+.face[class*="ch-0"] .t-step.c-orange .t-dot{ box-shadow:0 0 0 2.5px var(--orange),0 0 0 5px #fff; } .face[class*="ch-0"] .t-step.c-orange .t-when{ color:var(--orange-deep); } .face[class*="ch-0"] .t-step.c-orange .t-sheet{ background:var(--orange-soft); color:var(--orange-deep); }
 .face[class*="ch-0"] .t-title{ font-family:'Bricolage Grotesque',sans-serif; font-weight:800; font-size:calc(15px*var(--fit,1)); line-height:1.2; color:var(--ink); margin-bottom:5px; }
 .face[class*="ch-0"] .t-intent{ font-size:calc(12px*var(--fit,1)); line-height:1.4; color:var(--soft); text-align:center; }
 </style></head>
@@ -1714,10 +1716,28 @@ html, body{ background:#f1f0ec; }
 
         <div class="q-block">
           <span class="q-label"><span class="q-num">03</span>The workshops we ran</span>
-          <div class="workshops">
-            <div class="workshop"><span class="ws-thumb" style="background-image:url('images/workshops/generative-ai.png')"></span><span class="ws-name">Generative AI &amp; prompting</span></div>
-            <div class="workshop"><span class="ws-thumb" style="background-image:url('images/workshops/reinforcement-learning.png')"></span><span class="ws-name">Reinforcement learning</span></div>
-            <div class="workshop"><span class="ws-thumb" style="background-image:url('images/workshops/stupid-invention.png')"></span><span class="ws-name">Stupid Invention</span></div>
+          <div class="timeline" style="grid-template-columns:repeat(3,1fr);">
+            <div class="t-step c-green">
+              <div class="t-dot"></div>
+              <div class="t-when">Dec 2025</div>
+              <div class="t-title">AI Lab - Inside the Machine</div>
+              <div class="t-intent">How a model predicts, seen from the inside.</div>
+              <a class="t-sheet" href="https://github.com/Youth-AI-Lab/deliverables/blob/master/Ideation_Sheets/YouthAiLab_Explorations_Ideation_Sheet_IntroductoryAIGame_PredictiveAI.pdf" target="_blank" rel="noopener">View the sheet ↗</a>
+            </div>
+            <div class="t-step c-blue">
+              <div class="t-dot"></div>
+              <div class="t-when">Jan 2026</div>
+              <div class="t-title">Reinforce your Learnings</div>
+              <div class="t-intent">An unplugged-to-plugged take on how AI learns.</div>
+              <a class="t-sheet" href="https://github.com/Youth-AI-Lab/deliverables/blob/master/Ideation_Sheets/YouthAiLab_Explorations_Ideation_Sheet_BioInspiredAlgorithms.pdf" target="_blank" rel="noopener">View the sheet ↗</a>
+            </div>
+            <div class="t-step c-pink">
+              <div class="t-dot"></div>
+              <div class="t-when">Mar · Apr 2026</div>
+              <div class="t-title">Who Does NOT Want to Be My Business Partner?</div>
+              <div class="t-intent">Invent a product, pitch it, catch the AI's hallucinations.</div>
+              <a class="t-sheet" href="https://github.com/Youth-AI-Lab/deliverables/blob/master/Ideation_Sheets/YouthAiLab_Explorations_Ideation_Sheet_TheStupidInvention.pdf" target="_blank" rel="noopener">View the sheet ↗</a>
+            </div>
           </div>
         </div>
 
@@ -1840,17 +1860,19 @@ html, body{ background:#f1f0ec; }
         <div class="q-block">
           <span class="q-label"><span class="q-num">03</span>The next workshops</span>
           <div class="timeline">
-            <div class="t-step">
+            <div class="t-step c-yellow">
               <div class="t-dot"></div>
               <div class="t-when">June 2026</div>
-              <div class="t-title">Catching AI in its biases</div>
-              <div class="t-intent">An afternoon on bias in language models: the group probes a model to find where it leaves people out, then proposes fairer, more representative answers.</div>
+              <div class="t-title">The Bias Bounty Hunt Challenge</div>
+              <div class="t-intent">Hunt where a model leaves people out, then make its answers fairer.</div>
+              <a class="t-sheet" href="https://github.com/Youth-AI-Lab/deliverables/blob/master/Ideation_Sheets/YouthAiLab_Template_Explorations_Ideation_Sheet_BiasBountyHunt.pdf" target="_blank" rel="noopener">View the sheet ↗</a>
             </div>
-            <div class="t-step tomorrow">
+            <div class="t-step c-orange">
               <div class="t-dot"></div>
               <div class="t-when">July 2026 · intensive week</div>
-              <div class="t-title">Building WikiYouthBot on an SDG question</div>
-              <div class="t-intent">A full week tied to one Sustainable Development Goal: build a small local dataset, write the bot's brief, and ship a specialised chatbot to defend in front of an outside audience.</div>
+              <div class="t-title">WikiYouthBot - Introducing AI-based simple chatbot</div>
+              <div class="t-intent">Build a small dataset and ship a specialised chatbot to defend in public.</div>
+              <a class="t-sheet" href="https://github.com/Youth-AI-Lab/deliverables/blob/master/Ideation_Sheets/YouthAiLab_Template_Explorations_Ideation_Sheet_WikiYouthBot.pdf" target="_blank" rel="noopener">View the sheet ↗</a>
             </div>
           </div>
         </div>
@@ -2045,7 +2067,7 @@ html, body{ background:#f1f0ec; }
     function close(){ lb.style.display='none'; img.removeAttribute('src'); }
     lb.addEventListener('click', close);
     document.addEventListener('keydown', e=>{ if(e.key==='Escape') close(); });
-    document.querySelectorAll('.face .upload, .face .ws-thumb, .static-right .photo.ph-img').forEach(el=>{
+    document.querySelectorAll('.face .upload, .static-right .photo.ph-img').forEach(el=>{
       const m = getComputedStyle(el).backgroundImage.match(/url\(["']?(.*?)["']?\)/);
       if(!m || !m[1]) return;
       el.addEventListener('click', e=>{ e.stopPropagation(); img.src = m[1]; lb.style.display='flex'; });
