@@ -1501,6 +1501,16 @@ html, body{ background:#f1f0ec; }
 /* uniform binding on every spread (same as page 1), no special cover effect */
 .book-base::before{ display:none !important; }
 .spine{ position:absolute; top:0; bottom:0; left:50%; width:16px; transform:translateX(-50%); z-index:150; pointer-events:none; background:linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.07) 38%, rgba(0,0,0,0.22) 49%, rgba(0,0,0,0.22) 51%, rgba(0,0,0,0.07) 62%, rgba(0,0,0,0) 100%); }
+/* only the user-facing page intercepts clicks (3D back-face fix) */
+.sheet.turned .face.front{ pointer-events:none; }
+.sheet:not(.turned) .face.back{ pointer-events:none; }
+/* single-step next frieze */
+.face[class*="ch-0"] .timeline.single{ grid-template-columns:1fr; max-width:470px; }
+.face[class*="ch-0"] .timeline.single::before{ display:none; }
+/* production video thumbnail (opens in lightbox) */
+.face[class*="ch-0"] .prod-video{ position:relative; }
+.face[class*="ch-0"] .prod-play{ width:40px; height:40px; border-radius:50%; background:rgba(255,255,255,0.92); box-shadow:0 4px 12px rgba(0,0,0,0.35); display:flex; align-items:center; justify-content:center; }
+.face[class*="ch-0"] .prod-play::after{ content:''; width:0; height:0; border-left:14px solid var(--green-deep); border-top:9px solid transparent; border-bottom:9px solid transparent; margin-left:3px; }
 @media print {
   html, body { -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; background:#fff !important; }
   .spine{ display:none !important; }
@@ -1771,7 +1781,7 @@ html, body{ background:#f1f0ec; }
         <div class="q-block">
           <span class="q-label"><span class="q-num">03</span>What the participants produced</span>
           <div class="columns-2" style="grid-template-columns:repeat(3,1fr); gap: 16px;">
-            <video class="upload upload-small" src="images/productions/production-video.mp4" controls preload="metadata" style="border: none; box-shadow: inset 0 0 0 3px var(--green), inset 0 0 0 6px #fff, inset 0 0 0 9px var(--orange), 0 10px 22px rgba(0,0,0,0.10); margin: 0; object-fit:cover; background:#0f1d2a;"></video>
+            <div class="upload upload-small prod-video" data-video="images/productions/production-video.mp4" style="border: none; box-shadow: inset 0 0 0 3px var(--green), inset 0 0 0 6px #fff, inset 0 0 0 9px var(--orange), 0 10px 22px rgba(0,0,0,0.10); margin: 0; cursor:pointer; background-image:url('images/productions/production-poster.webp'); background-size:cover; background-position:center;"><span class="prod-play"></span></div>
             <div class="upload upload-small" style="border: none; box-shadow: inset 0 0 0 3px var(--orange), inset 0 0 0 6px #fff, inset 0 0 0 9px var(--blue), 0 10px 22px rgba(0,0,0,0.10); margin: 0; cursor: zoom-in; background-image:url('images/productions/production-01.webp'); background-size:cover; background-position:center;"></div>
             <div class="upload upload-small" style="border: none; box-shadow: inset 0 0 0 3px var(--pink), inset 0 0 0 6px #fff, inset 0 0 0 9px var(--green), 0 10px 22px rgba(0,0,0,0.10); margin: 0; cursor: zoom-in; background-image:url('images/productions/production-02.webp'); background-size:cover; background-position:center;"></div>
           </div>
@@ -1857,14 +1867,7 @@ html, body{ background:#f1f0ec; }
 
         <div class="q-block">
           <span class="q-label"><span class="q-num">03</span>The next workshops</span>
-          <div class="timeline">
-            <div class="t-step c-yellow">
-              <div class="t-dot"></div>
-              <div class="t-when">June 2026</div>
-              <div class="t-title">The Bias Bounty Hunt Challenge</div>
-              <div class="t-intent">Hunt where a model leaves people out, then make its answers fairer.</div>
-              <a class="t-sheet" href="https://github.com/Youth-AI-Lab/deliverables/raw/master/Ideation_Sheets/YouthAiLab_Template_Explorations_Ideation_Sheet_BiasBountyHunt.pdf" target="_blank" rel="noopener">View the sheet ↗</a>
-            </div>
+          <div class="timeline single">
             <div class="t-step c-orange">
               <div class="t-dot"></div>
               <div class="t-when">July 2026 · intensive week</div>
@@ -2059,16 +2062,22 @@ html, body{ background:#f1f0ec; }
     const lb = document.createElement('div');
     lb.style.cssText = 'position:fixed;inset:0;background:rgba(20,20,22,.92);display:none;align-items:center;justify-content:center;z-index:200;cursor:zoom-out;padding:30px;';
     const img = document.createElement('img');
-    img.style.cssText = 'max-width:95vw;max-height:94vh;border-radius:10px;box-shadow:0 24px 70px rgba(0,0,0,.6);';
-    lb.appendChild(img);
+    img.style.cssText = 'max-width:95vw;max-height:94vh;border-radius:10px;box-shadow:0 24px 70px rgba(0,0,0,.6);display:none;';
+    const vid = document.createElement('video');
+    vid.controls = true; vid.playsInline = true;
+    vid.style.cssText = 'max-width:95vw;max-height:94vh;border-radius:10px;box-shadow:0 24px 70px rgba(0,0,0,.6);display:none;background:#000;';
+    lb.appendChild(img); lb.appendChild(vid);
     document.body.appendChild(lb);
-    function close(){ lb.style.display='none'; img.removeAttribute('src'); }
-    lb.addEventListener('click', close);
+    function close(){ lb.style.display='none'; img.removeAttribute('src'); img.style.display='none'; try{vid.pause();}catch(e){} vid.removeAttribute('src'); vid.style.display='none'; }
+    lb.addEventListener('click', e=>{ if(e.target===lb) close(); });
     document.addEventListener('keydown', e=>{ if(e.key==='Escape') close(); });
-    document.querySelectorAll('.face .upload, .static-right .photo.ph-img').forEach(el=>{
+    document.querySelectorAll('.face .upload:not(.prod-video), .static-right .photo.ph-img').forEach(el=>{
       const m = getComputedStyle(el).backgroundImage.match(/url\(["']?(.*?)["']?\)/);
       if(!m || !m[1]) return;
-      el.addEventListener('click', e=>{ e.stopPropagation(); img.src = m[1]; lb.style.display='flex'; });
+      el.addEventListener('click', e=>{ e.stopPropagation(); img.src = m[1]; img.style.display='block'; vid.style.display='none'; lb.style.display='flex'; });
+    });
+    document.querySelectorAll('.face [data-video]').forEach(el=>{
+      el.addEventListener('click', e=>{ e.stopPropagation(); vid.src = el.dataset.video; vid.style.display='block'; img.style.display='none'; lb.style.display='flex'; vid.play().catch(()=>{}); });
     });
   })();
 
