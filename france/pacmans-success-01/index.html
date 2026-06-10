@@ -1468,12 +1468,18 @@
 .face[class*="ch-0"] .video{ aspect-ratio:auto !important; height:calc(140px*var(--fit,1)); }
 .face[class*="ch-0"] .upload-small{ aspect-ratio:4/3 !important; }
 /* key numbers: big punchy figure in a coloured pill + description */
-.face[class*="ch-0"] .key-nums{ display:flex; flex-direction:column; gap:calc(12px*var(--fit,1)); margin-top:calc(2px*var(--fit,1)); }
-.face[class*="ch-0"] .key-num{ display:flex; align-items:center; gap:16px; }
-.face[class*="ch-0"] .key-num .kn-fig{ font-family:'Bricolage Grotesque',sans-serif; font-weight:900; font-size:calc(34px*var(--fit,1)); line-height:1; letter-spacing:-1.5px; color:var(--green-deep); background:var(--green-soft); border-radius:14px; padding:calc(10px*var(--fit,1)) calc(8px*var(--fit,1)); min-width:calc(118px*var(--fit,1)); text-align:center; flex-shrink:0; }
+.face[class*="ch-0"] .key-nums{ display:flex; flex-direction:column; gap:calc(9px*var(--fit,1)); margin-top:calc(2px*var(--fit,1)); }
+.face[class*="ch-0"] .key-num{ display:flex; align-items:center; gap:14px; }
+.face[class*="ch-0"] .key-num .kn-fig{ font-family:'Bricolage Grotesque',sans-serif; font-weight:900; font-size:calc(25px*var(--fit,1)); line-height:1; letter-spacing:-1px; color:var(--green-deep); background:var(--green-soft); border-radius:11px; padding:calc(7px*var(--fit,1)) calc(8px*var(--fit,1)); min-width:calc(92px*var(--fit,1)); text-align:center; flex-shrink:0; }
 .face[class*="ch-0"] .key-num.pink .kn-fig{ color:var(--pink-deep); background:var(--pink-soft); }
 .face[class*="ch-0"] .key-num.blue .kn-fig{ color:var(--blue-deep); background:var(--blue-soft); }
-.face[class*="ch-0"] .key-num .kn-desc{ font-size:calc(13.5px*var(--fit,1)); line-height:1.35; color:var(--soft); font-weight:600; }
+.face[class*="ch-0"] .key-num .kn-desc{ font-size:calc(13px*var(--fit,1)); line-height:1.3; color:var(--soft); font-weight:600; }
+/* workshop square cards (Ch02) — link out to each workshop */
+.face[class*="ch-0"] .workshops{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.face[class*="ch-0"] .workshop{ text-decoration:none; display:flex; flex-direction:column; gap:calc(8px*var(--fit,1)); }
+.face[class*="ch-0"] .workshop .ws-thumb{ aspect-ratio:1; border-radius:13px; background:var(--accent-soft); background-size:cover; background-position:center; box-shadow:inset 0 0 0 3px var(--accent), inset 0 0 0 6px #fff, 0 8px 18px rgba(0,0,0,0.10); display:block; transition:transform .12s ease; }
+.face[class*="ch-0"] .workshop:hover .ws-thumb{ transform:translateY(-3px); }
+.face[class*="ch-0"] .workshop .ws-name{ font-size:calc(12px*var(--fit,1)); font-weight:700; color:var(--ink); text-align:center; line-height:1.25; }
 /* lab logo on the right of the chapter header line */
 /* coloured chapter header band with white pills + coloured text */
 .face[class*="ch-0"] .header-row{ flex-wrap:nowrap; align-items:center; background:var(--accent); border-radius:16px; padding:14px 16px; gap:10px; }
@@ -1507,7 +1513,7 @@ html, body{ background:#f1f0ec; }
 /* skills are display-only, not clickable */
 .face[class*="ch-0"] .skill-check{ cursor:default; }
 /* images open full size on click */
-.face .upload[style*="background-image"], .static-right .photo.ph-img{ cursor:zoom-in; }
+.face .upload[style*="background-image"], .face[class*="ch-0"] .ws-thumb, .static-right .photo.ph-img{ cursor:zoom-in; }
 /* upcoming-workshops timeline (Ch05), mirrored from the postcard */
 .face[class*="ch-0"] .timeline{ position:relative; display:grid; grid-template-columns:1fr 1fr; gap:24px; padding:20px 8px 0; margin-top:6px; }
 .face[class*="ch-0"] .timeline::before{ content:''; position:absolute; top:31px; left:9%; right:9%; height:2.5px; background:repeating-linear-gradient(to right, var(--yellow) 0 8px, transparent 8px 14px); z-index:0; }
@@ -1553,21 +1559,21 @@ html, body{ background:#f1f0ec; }
           <div class="toc-num"><span class="badge-num pink">02</span></div>
           <div class="toc-body">
             <div class="toc-title">What we tried</div>
-            <div class="toc-meta">the practice, the setup, what they produced</div>
+            <div class="toc-meta">the practice, the setup, the workshops</div>
           </div>
         </li>
         <li>
           <div class="toc-num"><span class="badge-num yellow">03</span></div>
           <div class="toc-body">
             <div class="toc-title">What unfolded</div>
-            <div class="toc-meta">what we observed, a challenge, a testimony</div>
+            <div class="toc-meta">what we observed, a challenge, what they produced</div>
           </div>
         </li>
         <li>
           <div class="toc-num"><span class="badge-num blue">04</span></div>
           <div class="toc-body">
             <div class="toc-title">The impact</div>
-            <div class="toc-meta">what changed, the numbers, the skills</div>
+            <div class="toc-meta">what changed, the numbers, the skills, a testimony</div>
           </div>
         </li>
         <li>
@@ -1636,7 +1642,7 @@ html, body{ background:#f1f0ec; }
           <div class="cf"><span class="cf-key">Story written on</span><span class="fillable-inline">Jun 2026</span></div>
         </div>
 
-        <div class="upload" style="margin: 26px 0; border: none; box-shadow: inset 0 0 0 3px var(--green), inset 0 0 0 6px #fff, inset 0 0 0 9px var(--orange), inset 0 0 0 12px #fff, inset 0 0 0 15px var(--pink), 0 12px 28px rgba(0,0,0,0.10); cursor: default; background-image:url('images/hero/image.png'); background-size:cover; background-position:center;"></div>
+        <div class="upload" style="margin: 26px 0; border: none; box-shadow: inset 0 0 0 3px var(--green), inset 0 0 0 6px #fff, inset 0 0 0 9px var(--orange), inset 0 0 0 12px #fff, inset 0 0 0 15px var(--pink), 0 12px 28px rgba(0,0,0,0.10); cursor: default; background-image:url('images/hero/hero.png'); background-size:cover; background-position:center;"></div>
 
         <div class="stat-grid">
           <div class="stat"><div class="n">17</div><div class="l">young people involved</div></div>
@@ -1707,10 +1713,11 @@ html, body{ background:#f1f0ec; }
         </div>
 
         <div class="q-block">
-          <span class="q-label"><span class="q-num">03</span>What the participants produced</span>
-          <div class="columns-2" style="gap: 28px;">
-            <div class="upload upload-small" style="border: none; box-shadow: inset 0 0 0 3px var(--orange), inset 0 0 0 6px #fff, inset 0 0 0 9px var(--blue), 0 10px 22px rgba(0,0,0,0.10); margin: 0; cursor: default; background-image:url('images/realisations/Capture_dcran_du_2026-03-30_16-01-30.webp'); background-size:cover; background-position:center;"></div>
-            <div class="upload upload-small" style="border: none; box-shadow: inset 0 0 0 3px var(--pink), inset 0 0 0 6px #fff, inset 0 0 0 9px var(--green), 0 10px 22px rgba(0,0,0,0.10); margin: 0; cursor: default; background-image:url('images/realisations/Capture_dcran_du_2026-04-01_12-06-59.webp'); background-size:cover; background-position:center;"></div>
+          <span class="q-label"><span class="q-num">03</span>The workshops we ran</span>
+          <div class="workshops">
+            <div class="workshop"><span class="ws-thumb" style="background-image:url('images/workshops/generative-ai.png')"></span><span class="ws-name">Generative AI &amp; prompting</span></div>
+            <div class="workshop"><span class="ws-thumb" style="background-image:url('images/workshops/reinforcement-learning.png')"></span><span class="ws-name">Reinforcement learning</span></div>
+            <div class="workshop"><span class="ws-thumb" style="background-image:url('images/workshops/stupid-invention.png')"></span><span class="ws-name">Stupid Invention</span></div>
           </div>
         </div>
 
@@ -1742,10 +1749,10 @@ html, body{ background:#f1f0ec; }
         </div>
 
         <div class="q-block">
-          <span class="q-label"><span class="q-num">03</span>Testimonies from the Lab</span>
-          <div class="quote-fillable">
-            <div class="q-text">At the start, some stayed quiet, especially when writing was involved. But as soon as it became 'we try first, then we ask the AI', the pressure dropped. They started to test ideas out loud, point out what the model got wrong, and suggest how to fix it. It stopped being about writing 'well' and became about thinking together.</div>
-            <div class="q-cite">— the room, across the period</div>
+          <span class="q-label"><span class="q-num">03</span>What the participants produced</span>
+          <div class="columns-2" style="gap: 28px;">
+            <div class="upload upload-small" style="border: none; box-shadow: inset 0 0 0 3px var(--orange), inset 0 0 0 6px #fff, inset 0 0 0 9px var(--blue), 0 10px 22px rgba(0,0,0,0.10); margin: 0; cursor: default; background-image:url('images/productions/production-01.webp'); background-size:cover; background-position:center;"></div>
+            <div class="upload upload-small" style="border: none; box-shadow: inset 0 0 0 3px var(--pink), inset 0 0 0 6px #fff, inset 0 0 0 9px var(--green), 0 10px 22px rgba(0,0,0,0.10); margin: 0; cursor: default; background-image:url('images/productions/production-02.webp'); background-size:cover; background-position:center;"></div>
           </div>
         </div>
 
@@ -1771,7 +1778,7 @@ html, body{ background:#f1f0ec; }
 
         <div class="q-block">
           <span class="q-label"><span class="q-num">01</span>What changed for the participants</span>
-          <p class="fillable tall">In December most of them approached AI cautiously, the tool felt like something for others: too technical, too much writing, too easy to get wrong in front of the group. By the 'Stupid Invention' sequence the balance had shifted. They came with ideas, tried first, then used the AI to compare and iterate. They could spot when the model sounded confident but invented details, and felt entitled to push back and rewrite. The main impact was agency: they did not follow the tool anymore, they used it.</p>
+          <p class="fillable tall">In December most approached AI cautiously: too technical, too much writing, too easy to get wrong in front of the group. By the 'Stupid Invention' sequence that had shifted. They came with ideas, tried first, then used the AI to compare and iterate, spotting when it sounded confident but invented details, and feeling free to push back and rewrite. The real impact was agency: they no longer followed the tool, they used it.</p>
         </div>
 
         <div class="q-block">
@@ -1793,6 +1800,13 @@ html, body{ background:#f1f0ec; }
             <span class="skill-check checked">algorithmic thinking</span>
             <span class="skill-check checked">media literacy</span>
             <span class="skill-check checked">creativity (structured)</span>
+          </div>
+        </div>
+
+        <div class="q-block">
+          <span class="q-label"><span class="q-num">04</span>Testimonies from the Lab</span>
+          <div class="quote-fillable">
+            <div class="q-text">At the start, some stayed quiet when writing was involved. But once it became 'we try first, then we ask the AI', the pressure dropped: they tested ideas out loud, flagged what the model got wrong, and suggested fixes. It stopped being about writing 'well' and became about thinking together.</div>
           </div>
         </div>
 
@@ -1863,15 +1877,15 @@ html, body{ background:#f1f0ec; }
       </p>
 
       <div class="photo-grid" style="grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); height: 510px; gap: 12px;">
-        <div class="photo ph-img" style="background-image:url('images/gallery/image%201.png');"></div>
-        <div class="photo ph-img" style="background-image:url('images/gallery/image%202.png');"></div>
-        <div class="photo ph-img" style="background-image:url('images/gallery/image%203.png');"></div>
-        <div class="photo ph-img" style="background-image:url('images/gallery/image%204.png');"></div>
-        <div class="photo ph-img" style="background-image:url('images/gallery/image%205.png');"></div>
-        <div class="photo ph-img" style="background-image:url('images/gallery/image%206.png');"></div>
-        <div class="photo ph-img" style="background-image:url('images/gallery/image%207.png');"></div>
-        <div class="photo ph-img" style="background-image:url('images/gallery/image%208.png');"></div>
-        <div class="photo ph-img" style="background-image:url('images/gallery/8b8ebcee-b625-4d0b-92a6-e2e46aff5ff3.png');"></div>
+        <div class="photo ph-img" style="background-image:url('images/gallery/gallery-01.png');"></div>
+        <div class="photo ph-img" style="background-image:url('images/gallery/gallery-02.png');"></div>
+        <div class="photo ph-img" style="background-image:url('images/gallery/gallery-03.png');"></div>
+        <div class="photo ph-img" style="background-image:url('images/gallery/gallery-04.png');"></div>
+        <div class="photo ph-img" style="background-image:url('images/gallery/gallery-05.png');"></div>
+        <div class="photo ph-img" style="background-image:url('images/gallery/gallery-06.png');"></div>
+        <div class="photo ph-img" style="background-image:url('images/gallery/gallery-07.png');"></div>
+        <div class="photo ph-img" style="background-image:url('images/gallery/gallery-08.png');"></div>
+        <div class="photo ph-img" style="background-image:url('images/gallery/gallery-09.png');"></div>
       </div>
 
       <button class="pdf-download" onclick="window.print()">
@@ -2031,7 +2045,7 @@ html, body{ background:#f1f0ec; }
     function close(){ lb.style.display='none'; img.removeAttribute('src'); }
     lb.addEventListener('click', close);
     document.addEventListener('keydown', e=>{ if(e.key==='Escape') close(); });
-    document.querySelectorAll('.face .upload, .static-right .photo.ph-img').forEach(el=>{
+    document.querySelectorAll('.face .upload, .face .ws-thumb, .static-right .photo.ph-img').forEach(el=>{
       const m = getComputedStyle(el).backgroundImage.match(/url\(["']?(.*?)["']?\)/);
       if(!m || !m[1]) return;
       el.addEventListener('click', e=>{ e.stopPropagation(); img.src = m[1]; lb.style.display='flex'; });
