@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Youth Ai Lab Success Story (template)</title>
+<title>Youth Ai Lab Success Story · your story title</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=Patrick+Hand&display=swap');
 
@@ -1448,22 +1448,91 @@
     color: var(--ink);
   }
 </style>
-</head>
+<style>
+.fillable-inline{font-size:14px;}
+/* chapter pages: no grey boxes, justified body text, fixed even spacing between sections
+   (blocks keep their natural height and stack from the top). A single global --fit keeps the type
+   one size across every chapter and shrinks it only if a page would overflow. */
+.face[class*="ch-0"]{ gap:0; padding-bottom:96px; }
+.face[class*="ch-0"] > .q-block{ flex:0 0 auto !important; justify-content:flex-start; gap:5px; margin:36px 0 0; }
+.face[class*="ch-0"] .q-block > .fillable{ flex:0 0 auto !important; min-height:0 !important; background:transparent !important; padding:0 !important; text-align:justify; }
+.face[class*="ch-0"] .q-block > .fillable:hover{ background:transparent !important; }
+.face[class*="ch-0"] .fillable.short{ background:transparent !important; padding:1px 0 !important; text-align:left; }
+.face[class*="ch-0"] .fillable.short:hover{ background:transparent !important; }
+.face[class*="ch-0"] .entry-title{ font-size:calc(34px*var(--fit,1)); margin:18px 0 0; }
+.face[class*="ch-0"] .q-label{ font-size:calc(15px*var(--fit,1)); margin-bottom:0; line-height:1.25; }
+.face[class*="ch-0"] .fillable{ font-size:calc(14px*var(--fit,1)); line-height:1.5; }
+.face[class*="ch-0"] .fillable-row{ margin-bottom:calc(4px*var(--fit,1)); }
+.face[class*="ch-0"] .quote-fillable .q-text{ font-size:calc(14px*var(--fit,1)); line-height:1.45; text-align:justify; }
+.face[class*="ch-0"] .skill-check{ padding:calc(6px*var(--fit,1)) 11px; font-size:calc(12px*var(--fit,1)); }
+.face[class*="ch-0"] .video{ aspect-ratio:auto !important; height:calc(140px*var(--fit,1)); }
+.face[class*="ch-0"] .upload-small{ aspect-ratio:4/3 !important; }
+/* key numbers: big punchy figure in a coloured pill + description */
+.face[class*="ch-0"] .key-nums{ display:flex; flex-direction:column; gap:calc(12px*var(--fit,1)); margin-top:calc(2px*var(--fit,1)); }
+.face[class*="ch-0"] .key-num{ display:flex; align-items:center; gap:16px; }
+.face[class*="ch-0"] .key-num .kn-fig{ font-family:'Bricolage Grotesque',sans-serif; font-weight:900; font-size:calc(34px*var(--fit,1)); line-height:1; letter-spacing:-1.5px; color:var(--green-deep); background:var(--green-soft); border-radius:14px; padding:calc(10px*var(--fit,1)) calc(8px*var(--fit,1)); min-width:calc(118px*var(--fit,1)); text-align:center; flex-shrink:0; }
+.face[class*="ch-0"] .key-num.pink .kn-fig{ color:var(--pink-deep); background:var(--pink-soft); }
+.face[class*="ch-0"] .key-num.blue .kn-fig{ color:var(--blue-deep); background:var(--blue-soft); }
+.face[class*="ch-0"] .key-num .kn-desc{ font-size:calc(13.5px*var(--fit,1)); line-height:1.35; color:var(--soft); font-weight:600; }
+/* lab logo on the right of the chapter header line */
+/* coloured chapter header band with white pills + coloured text */
+.face[class*="ch-0"] .header-row{ flex-wrap:nowrap; align-items:center; background:var(--accent); border-radius:16px; padding:14px 16px; gap:10px; }
+.face[class*="ch-0"] .header-row .eyebrow{ margin-bottom:0; background:#fff !important; color:var(--accent-deep) !important; }
+.face[class*="ch-0"] .header-row .country-pill{ margin-bottom:0; background:#fff !important; color:var(--accent-deep) !important; }
+.face[class*="ch-0"] .header-row .country-pill .p-num{ background:var(--accent-soft) !important; color:var(--accent-deep) !important; }
+.face[class*="ch-0"] .ch-lablogo{ margin-left:auto; height:34px; width:auto; max-width:130px; object-fit:contain; display:block; }
+/* same coloured header on the contents page, full width like the chapters */
+.static-left .header-row{ display:flex; align-items:center; background:var(--green); border-radius:16px; padding:14px 16px; gap:10px; }
+.static-left .header-row .eyebrow{ margin-bottom:0; background:#fff !important; color:var(--green-deep) !important; }
+.static-left .header-row .country-pill{ margin-bottom:0; background:#fff !important; color:var(--green-deep) !important; }
+.static-left .header-row .country-pill .p-num{ background:var(--green-soft) !important; color:var(--green-deep) !important; }
+.static-left .ch-lablogo{ margin-left:auto; height:34px; width:auto; max-width:130px; object-fit:contain; display:block; }
+.static-left .entry-title{ margin-top:22px; }
+.static-right .photo{ aspect-ratio:auto !important; }
+.static-right .photo.ph-img{ background-size:cover; background-position:center; }
+.static-right .photo.ph-img::before, .static-right .photo.ph-img::after{ display:none; }
+.cover-fields .cf-key{ white-space:nowrap; }
+/* backdrop around the booklet — same grey as the postcards */
+html, body{ background:#f1f0ec; }
+/* uniform binding on every spread (same as page 1), no special cover effect */
+.book-base::before{ display:none !important; }
+.spine{ position:absolute; top:0; bottom:0; left:50%; width:16px; transform:translateX(-50%); z-index:150; pointer-events:none; background:linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.07) 38%, rgba(0,0,0,0.22) 49%, rgba(0,0,0,0.22) 51%, rgba(0,0,0,0.07) 62%, rgba(0,0,0,0) 100%); }
+@media print {
+  html, body { -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; background:#fff !important; }
+  .spine{ display:none !important; }
+  .toc-banner{ height:46mm !important; }
+}
+/* country pill: FR takes the colour of its pill */
+.country-pill .p-num{ color:inherit; }
+/* skills are display-only, not clickable */
+.face[class*="ch-0"] .skill-check{ cursor:default; }
+/* images open full size on click */
+.face .upload[style*="background-image"], .static-right .photo.ph-img{ cursor:zoom-in; }
+/* upcoming-workshops timeline (Ch05), mirrored from the postcard */
+.face[class*="ch-0"] .timeline{ position:relative; display:grid; grid-template-columns:1fr 1fr; gap:24px; padding:20px 8px 0; margin-top:6px; }
+.face[class*="ch-0"] .timeline::before{ content:''; position:absolute; top:31px; left:9%; right:9%; height:2.5px; background:repeating-linear-gradient(to right, var(--yellow) 0 8px, transparent 8px 14px); z-index:0; }
+.face[class*="ch-0"] .t-step{ position:relative; z-index:1; display:flex; flex-direction:column; align-items:center; text-align:center; padding:0 10px; }
+.face[class*="ch-0"] .t-dot{ width:22px; height:22px; border-radius:50%; background:#fff; box-shadow:0 0 0 2.5px var(--yellow), 0 0 0 5px #fff; margin-bottom:12px; position:relative; z-index:2; }
+.face[class*="ch-0"] .t-step.tomorrow .t-dot{ box-shadow:0 0 0 2.5px var(--orange), 0 0 0 5px #fff; }
+.face[class*="ch-0"] .t-when{ font-family:'Bricolage Grotesque',sans-serif; font-size:calc(10px*var(--fit,1)); font-weight:800; letter-spacing:0.12em; text-transform:uppercase; color:var(--yellow-deep); margin-bottom:5px; }
+.face[class*="ch-0"] .t-step.tomorrow .t-when{ color:var(--orange-deep); }
+.face[class*="ch-0"] .t-title{ font-family:'Bricolage Grotesque',sans-serif; font-weight:800; font-size:calc(15px*var(--fit,1)); line-height:1.2; color:var(--ink); margin-bottom:5px; }
+.face[class*="ch-0"] .t-intent{ font-size:calc(12px*var(--fit,1)); line-height:1.4; color:var(--soft); text-align:center; }
+</style></head>
 <body>
 
 <div class="stage">
 
   <div class="book" id="book">
     <div class="book-base"></div>
+    <div class="spine"></div>
 
     <!-- STATIC LEFT : table of contents of this story -->
     <div class="static-left">
-      <span class="lab-logo big" style="position: absolute; top: 90px; right: 70px; width: 210px; height: 140px; border-radius: 0; border: none; background-image: url('../CommonVisuals/LogoLabFrance.png'); background-size: contain; background-repeat: no-repeat; background-position: center; background-color: transparent; box-shadow: none; color: transparent;"></span>
-
       <div class="header-row">
         <span class="eyebrow">Inside this story</span>
-        <span class="period-pill">Period <span class="p-num empty">--</span></span>
-        <span class="period-pill country-pill">Country <span class="p-num empty">--</span></span>
+        <span class="period-pill country-pill">Country <span class="p-num">FR</span></span>
+        <img class="ch-lablogo" src="../CommonVisuals/LogoLabFrance.png" alt="">
       </div>
 
       <h2 class="entry-title" style="font-size: 34px;">A success story<br>in <em>five chapters.</em></h2>
@@ -1476,36 +1545,36 @@
         <li>
           <div class="toc-num"><span class="badge-num">01</span></div>
           <div class="toc-body">
-            <div class="toc-title">Where it started</div>
-            <div class="toc-meta">what was at stake, who they were, the goal</div>
+            <div class="toc-title">Where it began</div>
+            <div class="toc-meta">the issue, the participants, the goal</div>
           </div>
         </li>
         <li>
           <div class="toc-num"><span class="badge-num pink">02</span></div>
           <div class="toc-body">
             <div class="toc-title">What we tried</div>
-            <div class="toc-meta">the bet, the setup, the video</div>
+            <div class="toc-meta">the practice, the setup, what they produced</div>
           </div>
         </li>
         <li>
           <div class="toc-num"><span class="badge-num yellow">03</span></div>
           <div class="toc-body">
             <div class="toc-title">What unfolded</div>
-            <div class="toc-meta">what surprised, a challenge, a quote, productions</div>
+            <div class="toc-meta">what we observed, a challenge, a testimony</div>
           </div>
         </li>
         <li>
           <div class="toc-num"><span class="badge-num blue">04</span></div>
           <div class="toc-body">
-            <div class="toc-title">The shift</div>
-            <div class="toc-meta">what participants can do now, the numbers, the skills</div>
+            <div class="toc-title">The impact</div>
+            <div class="toc-meta">what changed, the numbers, the skills</div>
           </div>
         </li>
         <li>
           <div class="toc-num"><span class="badge-num orange">05</span></div>
           <div class="toc-body">
-            <div class="toc-title">Where it goes from here</div>
-            <div class="toc-meta">sustaining, replication, a word from the mentors</div>
+            <div class="toc-title">Where it goes next</div>
+            <div class="toc-meta">what's next, and reuse by others</div>
           </div>
         </li>
       </ul>
@@ -1555,20 +1624,19 @@
 
         <div class="header-row">
           <span class="eyebrow">Youth Ai Lab · a success story</span>
-          <span class="period-pill">Period <span class="p-num empty">--</span></span>
-          <span class="period-pill country-pill">Country <span class="p-num empty">--</span></span>
+          <span class="period-pill country-pill">Country <span class="p-num">FR</span></span>
         </div>
 
         <h1 class="title">Story title<br>on <em>two lines.</em></h1>
 
-        <p style="margin-top: 14px; margin-bottom: 24px; color: var(--soft); font-size: 14px; line-height: 1.55;">The return of the Pacman's — Level 2 unlocked: The fortress of algorithms.</p>
+        <p style="margin-top: 14px; margin-bottom: 24px; color: var(--soft); font-size: 14px; line-height: 1.55;">Your pitch here: the why of this story in one short line.</p>
 
         <div class="cover-fields" style="grid-template-columns: 1fr 1fr;">
-          <div class="cf"><span class="cf-key">Period dates</span><span class="fillable-inline">MMM to MMM YYYY</span></div>
-          <div class="cf"><span class="cf-key">Story written on</span><span class="fillable-inline">DD MMM YYYY</span></div>
+          <div class="cf"><span class="cf-key">Period dates</span><span class="fillable-inline">MMM YYYY · MMM YYYY</span></div>
+          <div class="cf"><span class="cf-key">Story written on</span><span class="fillable-inline">MMM YYYY</span></div>
         </div>
 
-        <div class="upload" style="margin: 26px 0; border: none; box-shadow: inset 0 0 0 3px var(--green), inset 0 0 0 6px #fff, inset 0 0 0 9px var(--orange), inset 0 0 0 12px #fff, inset 0 0 0 15px var(--pink), 0 12px 28px rgba(0,0,0,0.10); cursor: default;"><span>hero image</span></div>
+        <div class="upload" style="margin: 26px 0; border: none; box-shadow: inset 0 0 0 3px var(--green), inset 0 0 0 6px #fff, inset 0 0 0 9px var(--orange), inset 0 0 0 12px #fff, inset 0 0 0 15px var(--pink), 0 12px 28px rgba(0,0,0,0.10); cursor: default;"><span>hero image · to add</span></div>
 
         <div class="stat-grid">
           <div class="stat"><div class="n">--</div><div class="l">young people involved</div></div>
@@ -1578,7 +1646,7 @@
 
         <div class="footer-mark right-page">
           <span class="logo-img small"></span>
-          Success Story · The return of the Pacman's
+          Success Story · your story title
         </div>
 
         <div class="corner-fold corner-next" data-action="next"></div>
@@ -1587,24 +1655,24 @@
       <div class="face back ch-01">
         <div class="header-row">
           <span class="eyebrow">Chapter 01</span>
-          <span class="period-pill">Period <span class="p-num empty">--</span></span>
-          <span class="period-pill country-pill">Country <span class="p-num empty">--</span></span>
+          <span class="period-pill country-pill">Country <span class="p-num">FR</span></span>
+          <img class="ch-lablogo" src="../CommonVisuals/LogoLabFrance.png" alt="">
         </div>
 
-        <h2 class="entry-title">How it <em>began.</em></h2>
+        <h2 class="entry-title">Where it <em>began.</em></h2>
 
         <div class="q-block">
-          <span class="q-label"><span class="q-num">01</span>What was at stake for these young people</span>
+          <span class="q-label"><span class="q-num">01</span>The issue we set out to address</span>
           <p class="fillable tall">Write here.</p>
         </div>
 
         <div class="q-block">
-          <span class="q-label"><span class="q-num">02</span>Who they were, and what they came in with</span>
+          <span class="q-label"><span class="q-num">02</span>The participants</span>
           <p class="fillable">Write here.</p>
         </div>
 
         <div class="q-block">
-          <span class="q-label"><span class="q-num">03</span>The goal across the period</span>
+          <span class="q-label"><span class="q-num">03</span>The goal</span>
           <p class="fillable">Write here.</p>
         </div>
 
@@ -1622,34 +1690,33 @@
       <div class="face front ch-02">
         <div class="header-row">
           <span class="eyebrow">Chapter 02</span>
-          <span class="period-pill">Period <span class="p-num empty">--</span></span>
-          <span class="period-pill country-pill">Country <span class="p-num empty">--</span></span>
+          <span class="period-pill country-pill">Country <span class="p-num">FR</span></span>
+          <img class="ch-lablogo" src="../CommonVisuals/LogoLabFrance.png" alt="">
         </div>
 
         <h2 class="entry-title">What <em>we tried.</em></h2>
 
         <div class="q-block">
-          <span class="q-label"><span class="q-num">01</span>The bet · the unconventional choice this lab made</span>
-          <p class="fillable short">Write here.</p>
-        </div>
-
-        <div class="q-block">
-          <span class="q-label"><span class="q-num">02</span>The approach across the sessions</span>
+          <span class="q-label"><span class="q-num">01</span>The practice and how we applied it</span>
           <p class="fillable tall">Write here.</p>
         </div>
 
         <div class="q-block">
-          <span class="q-label"><span class="q-num">03</span>A representative moment in motion</span>
-          <div class="video" style="border: none; box-shadow: inset 0 0 0 3px var(--blue), inset 0 0 0 7px #fff, inset 0 0 0 10px var(--green), 0 12px 28px rgba(0,0,0,0.12); margin: 0;">
-            <span class="v-corner">video</span>
-            <div class="play"></div>
-            <span class="v-meta">drop a video file or paste a link</span>
+          <span class="q-label"><span class="q-num">02</span>The setup and the people involved</span>
+          <p class="fillable">Write here.</p>
+        </div>
+
+        <div class="q-block">
+          <span class="q-label"><span class="q-num">03</span>What the participants produced</span>
+          <div class="columns-2" style="gap: 28px;">
+            <div class="upload upload-small" style="border: none; box-shadow: inset 0 0 0 3px var(--orange), inset 0 0 0 6px #fff, inset 0 0 0 9px var(--blue), 0 10px 22px rgba(0,0,0,0.10); margin: 0; cursor: default"><span class="upload-icon">image 1</span></div>
+            <div class="upload upload-small" style="border: none; box-shadow: inset 0 0 0 3px var(--pink), inset 0 0 0 6px #fff, inset 0 0 0 9px var(--green), 0 10px 22px rgba(0,0,0,0.10); margin: 0; cursor: default"><span class="upload-icon">image 2</span></div>
           </div>
         </div>
 
         <div class="footer-mark right-page">
           <span class="logo-img small"></span>
-          Success Story · The return of the Pacman's
+          Success Story · your story title
         </div>
 
         <div class="corner-fold corner-next" data-action="next"></div>
@@ -1658,14 +1725,14 @@
       <div class="face back ch-03">
         <div class="header-row">
           <span class="eyebrow">Chapter 03</span>
-          <span class="period-pill">Period <span class="p-num empty">--</span></span>
-          <span class="period-pill country-pill">Country <span class="p-num empty">--</span></span>
+          <span class="period-pill country-pill">Country <span class="p-num">FR</span></span>
+          <img class="ch-lablogo" src="../CommonVisuals/LogoLabFrance.png" alt="">
         </div>
 
         <h2 class="entry-title">What <em>unfolded.</em></h2>
 
         <div class="q-block">
-          <span class="q-label"><span class="q-num">01</span>What surprised the team · what did not match the plan</span>
+          <span class="q-label"><span class="q-num">01</span>What we observed</span>
           <p class="fillable">Write here.</p>
         </div>
 
@@ -1675,18 +1742,10 @@
         </div>
 
         <div class="q-block">
-          <span class="q-label"><span class="q-num">03</span>A young person said</span>
+          <span class="q-label"><span class="q-num">03</span>Testimonies from the Lab</span>
           <div class="quote-fillable">
-            <div class="q-text">The quote, exactly as it was said.</div>
-            <div class="q-cite">— first name, age</div>
-          </div>
-        </div>
-
-        <div class="q-block">
-          <span class="q-label"><span class="q-num">04</span>What the young people produced</span>
-          <div class="columns-2" style="gap: 28px;">
-            <div class="upload upload-small" style="border: none; box-shadow: inset 0 0 0 3px var(--orange), inset 0 0 0 6px #fff, inset 0 0 0 9px var(--blue), 0 10px 22px rgba(0,0,0,0.10); margin: 0; cursor: default;"><span class="upload-icon">image 1</span></div>
-            <div class="upload upload-small" style="border: none; box-shadow: inset 0 0 0 3px var(--pink), inset 0 0 0 6px #fff, inset 0 0 0 9px var(--green), 0 10px 22px rgba(0,0,0,0.10); margin: 0; cursor: default;"><span class="upload-icon">image 2</span></div>
+            <div class="q-text">A short testimony, in their voice — a quote, or a paraphrase if a direct quote falls flat.</div>
+            <div class="q-cite">— first name + age, or role</div>
           </div>
         </div>
 
@@ -1704,41 +1763,43 @@
       <div class="face front ch-04">
         <div class="header-row">
           <span class="eyebrow">Chapter 04</span>
-          <span class="period-pill">Period <span class="p-num empty">--</span></span>
-          <span class="period-pill country-pill">Country <span class="p-num empty">--</span></span>
+          <span class="period-pill country-pill">Country <span class="p-num">FR</span></span>
+          <img class="ch-lablogo" src="../CommonVisuals/LogoLabFrance.png" alt="">
         </div>
 
-        <h2 class="entry-title">The <em>shift.</em></h2>
+        <h2 class="entry-title">The <em>impact.</em></h2>
 
         <div class="q-block">
-          <span class="q-label"><span class="q-num">01</span>What participants can do now that they could not before</span>
+          <span class="q-label"><span class="q-num">01</span>What changed for the participants</span>
           <p class="fillable tall">Write here.</p>
         </div>
 
         <div class="q-block">
-          <span class="q-label"><span class="q-num">02</span>Numbers that show the shift</span>
-          <div class="fillable-row"><span class="row-num">1</span><span class="fillable short">a number that matters</span></div>
-          <div class="fillable-row"><span class="row-num pink">2</span><span class="fillable short">a second number</span></div>
-          <div class="fillable-row"><span class="row-num yellow">3</span><span class="fillable short">a third number</span></div>
+          <span class="q-label"><span class="q-num">02</span>Numbers that anchor the story</span>
+          <div class="key-nums">
+            <div class="key-num"><span class="kn-fig">00</span><span class="kn-desc">what it counts</span></div>
+            <div class="key-num pink"><span class="kn-fig">00</span><span class="kn-desc">what it counts</span></div>
+            <div class="key-num blue"><span class="kn-fig">00</span><span class="kn-desc">what it counts</span></div>
+          </div>
         </div>
 
         <div class="q-block">
           <span class="q-label"><span class="q-num">03</span>Skills addressed</span>
           <div class="skill-checks">
-            <span class="skill-check">data literacy</span>
-            <span class="skill-check">critical thinking</span>
-            <span class="skill-check">collaboration</span>
-            <span class="skill-check">prompting</span>
-            <span class="skill-check">algorithmic thinking</span>
-            <span class="skill-check">creativity</span>
-            <span class="skill-check">debugging</span>
-            <span class="skill-check">prioritisation</span>
+            <span class="skill-check">skill</span>
+            <span class="skill-check">skill</span>
+            <span class="skill-check">skill</span>
+            <span class="skill-check">skill</span>
+            <span class="skill-check">skill</span>
+            <span class="skill-check">skill</span>
+            <span class="skill-check">skill</span>
+            <span class="skill-check">skill</span>
           </div>
         </div>
 
         <div class="footer-mark right-page">
           <span class="logo-img small"></span>
-          Success Story · The return of the Pacman's
+          Success Story · your story title
         </div>
 
         <div class="corner-fold corner-next" data-action="next"></div>
@@ -1747,27 +1808,37 @@
       <div class="face back ch-05">
         <div class="header-row">
           <span class="eyebrow">Chapter 05</span>
-          <span class="period-pill">Period <span class="p-num empty">--</span></span>
-          <span class="period-pill country-pill">Country <span class="p-num empty">--</span></span>
+          <span class="period-pill country-pill">Country <span class="p-num">FR</span></span>
+          <img class="ch-lablogo" src="../CommonVisuals/LogoLabFrance.png" alt="">
         </div>
 
-        <h2 class="entry-title">Where it goes <em>from here.</em></h2>
+        <h2 class="entry-title">Where it goes <em>next.</em></h2>
 
         <div class="q-block">
-          <span class="q-label"><span class="q-num">01</span>How the lesson will carry into the next period</span>
+          <span class="q-label"><span class="q-num">01</span>How this will be sustained or extended</span>
           <p class="fillable tall">Write here.</p>
         </div>
 
         <div class="q-block">
-          <span class="q-label"><span class="q-num">02</span>For other labs picking this up</span>
+          <span class="q-label"><span class="q-num">02</span>For the youth community picking this up</span>
           <p class="fillable tall">Write here.</p>
         </div>
 
         <div class="q-block">
-          <span class="q-label"><span class="q-num">03</span>A word from the mentors</span>
-          <div class="mentors-word">
-            <div class="mw-text">A short reflection from the mentor team, written in their voice.</div>
-            <div class="mw-sign">— the mentors</div>
+          <span class="q-label"><span class="q-num">03</span>The next workshops</span>
+          <div class="timeline">
+            <div class="t-step">
+              <div class="t-dot"></div>
+              <div class="t-when">MMM YYYY</div>
+              <div class="t-title">Workshop title</div>
+              <div class="t-intent">One line on what this workshop will cover.</div>
+            </div>
+            <div class="t-step tomorrow">
+              <div class="t-dot"></div>
+              <div class="t-when">MMM YYYY</div>
+              <div class="t-title">Workshop title</div>
+              <div class="t-intent">One line on what this workshop will cover.</div>
+            </div>
           </div>
         </div>
 
@@ -1784,7 +1855,6 @@
     <div class="static-right">
       <div class="header-row">
         <span class="eyebrow">Photo gallery</span>
-        <span class="period-pill">Period <span class="p-num empty">--</span></span>
       </div>
 
       <h2 class="entry-title">Moments from<br>the <em>period.</em></h2>
@@ -1793,7 +1863,7 @@
         A visual trace of the activities, faces and productions that marked this reporting period.
       </p>
 
-      <div class="photo-grid">
+      <div class="photo-grid" style="grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); height: 510px; gap: 12px;">
         <div class="photo green"></div>
         <div class="photo pink"></div>
         <div class="photo yellow"></div>
@@ -1803,9 +1873,6 @@
         <div class="photo blue"></div>
         <div class="photo green"></div>
         <div class="photo orange"></div>
-        <div class="photo yellow"></div>
-        <div class="photo green"></div>
-        <div class="photo blue"></div>
       </div>
 
       <button class="pdf-download" onclick="window.print()">
@@ -1815,7 +1882,7 @@
 
       <div class="footer-mark right-page">
         <span class="logo-img small"></span>
-        Success Story · The return of the Pacman's
+        Success Story · your story title
       </div>
     </div>
 
@@ -1954,15 +2021,50 @@
     else if (wheelAccum < -threshold) { wheelAccum = 0; prev(); }
   }, { passive: true });
 
-  /* ---------- Skill check toggle ---------- */
-  document.querySelectorAll('.skill-check').forEach(c => {
-    c.addEventListener('click', (e) => {
-      e.stopPropagation();
-      c.classList.toggle('checked');
+  /* ---------- Image lightbox: click a photo to see it full size ---------- */
+  (function(){
+    const lb = document.createElement('div');
+    lb.style.cssText = 'position:fixed;inset:0;background:rgba(20,20,22,.92);display:none;align-items:center;justify-content:center;z-index:200;cursor:zoom-out;padding:30px;';
+    const img = document.createElement('img');
+    img.style.cssText = 'max-width:95vw;max-height:94vh;border-radius:10px;box-shadow:0 24px 70px rgba(0,0,0,.6);';
+    lb.appendChild(img);
+    document.body.appendChild(lb);
+    function close(){ lb.style.display='none'; img.removeAttribute('src'); }
+    lb.addEventListener('click', close);
+    document.addEventListener('keydown', e=>{ if(e.key==='Escape') close(); });
+    document.querySelectorAll('.face .upload, .static-right .photo.ph-img').forEach(el=>{
+      const m = getComputedStyle(el).backgroundImage.match(/url\(["']?(.*?)["']?\)/);
+      if(!m || !m[1]) return;
+      el.addEventListener('click', e=>{ e.stopPropagation(); img.src = m[1]; lb.style.display='flex'; });
     });
-  });
+  })();
 
   update();
+
+  /* ---------- Chapter auto-fit: one global type size for every chapter, shrunk only
+     enough that the densest page stops overflowing. Blocks then grow to fill each page. ---------- */
+  function chaptersOverflow(){
+    let bad = false;
+    document.querySelectorAll('.face[class*="ch-0"] .fillable, .face[class*="ch-0"] .quote-fillable .q-text, .face[class*="ch-0"] .mentors-word .mw-text').forEach(el=>{
+      if (el.scrollHeight > el.clientHeight + 1) bad = true;
+    });
+    document.querySelectorAll('.face[class*="ch-0"]').forEach(face=>{
+      if (face.scrollHeight > face.clientHeight + 1) bad = true;
+    });
+    return bad;
+  }
+  function fitChapters(){
+    const root = document.documentElement;
+    let f = 1, guard = 0;
+    root.style.setProperty('--fit','1');
+    while (chaptersOverflow() && f > 0.5 && guard < 60){
+      f -= 0.02; guard++;
+      root.style.setProperty('--fit', f.toFixed(3));
+    }
+  }
+  window.addEventListener('load', fitChapters);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitChapters);
+  fitChapters();
 </script>
 
 </body>

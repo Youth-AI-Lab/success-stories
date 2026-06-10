@@ -68,7 +68,7 @@ Examples:
 2. **Create the story folder**
 
    - Copy `template/index.html` to a new folder under the right country, named with the team+number slug, e.g. `france/pacmans-success-02/index.html`.
-   - Replace the placeholder content in the HTML with the partner's filled content (period, country, title, lab name, lab logo path, the five chapters, the quote, the numbers, the gallery photos).
+   - Replace the placeholder content in the HTML with the partner's filled content (period, country, title, lab name, lab logo path, the five chapters, the testimony, the numbers, the gallery photos).
    - Drop the media files in the same folder. Update the paths in the HTML so they point to the local files.
    - Asset paths: from a story folder (depth 2), `CommonVisuals/` is referenced as `../../CommonVisuals/`.
 
@@ -107,11 +107,11 @@ Two paths:
 
 See `success-story-template.md` for the writing principles partners follow when filling a story:
 
-- Dignify, do not glorify
+- Dignify young participants
 - Go beyond the *what*, reach the *why*
 - Concrete shifts, not broad statements
-- Numbers that show the shift
-- Final word in the mentors' voice
+- Numbers that anchor the story
+- Close with the next workshops as a short timeline
 
 ## Co-funding
 

@@ -1,45 +1,42 @@
 # Success story template
 
-Welcome. This template helps you write a success story that will be published as a Youth Ai Lab carnet. Fill each section below and send the file back. The HTML carnet is generated automatically from the content here.
+Welcome. This template helps you write a success story that will be published as a Youth Ai Lab carnet. Fill each section below and send the file back. The HTML carnet is generated from the content here.
 
 ---
 
 ## Guiding principles
 
-Read these before you start writing.
+**Dignify young participants.** Young people are people with agency and voice. Write them as such.
 
-**Dignify, do not glorify.** The young people are not victims and not statistics. They are people with agency, with voice, with value. Write them as such.
+**Go beyond the what, reach the why.** A story that only lists actions is forgettable. A story that shows why it mattered travels.
 
-**Go beyond the what, reach the why.** Numbers describe. The human context explains. A story that only tells what was done is forgettable; a story that explains why it mattered for someone is shared.
+**Tell it with intention.** Picture your reader (another lab, an evaluator, a future partner) and choose what will matter to them.
 
-**Tell it strategically.** Know who reads this story (other labs, EU evaluators, future partners, the consortium). Calibrate the angle to what is meaningful for them.
-
-**Make the reader feel something, then do something.** The best feedback is not "well written"; it is "this made me want to act". Stories are bridges between the lived experience of a lab and the people who can support, replicate, or fund what comes next.
-
-Length to aim for: one page per chapter when printed. Keep sentences short. Concrete beats abstract every time.
+**Make the reader feel something, then do something.** Aim for "I understand" and "I want to help" more than "well written".
 
 ---
 
 ## Frontmatter
 
-Fill in the metadata block below. The carnet generator reads it to populate the cover.
+Fill in the metadata block below.
 
 ```yaml
 title:                # Simple, concise, informative. Include an action verb. Catch the eye.
 pitch:                # Fifteen words or fewer. The why of this story, not the what.
 lab:                  # Your lab name as it should appear publicly.
 country:              # Country where the lab runs.
-activity:             # The source activity from the consortium catalogue.
-period:               # 01, 02 or 03 (the reporting period).
-session_date:         # DD MMM YYYY (the day the activity happened).
-written_on:           # DD MMM YYYY (the day this story was written).
+period:               # Date range, month + year (e.g. Dec 2025 to Jun 2026).
+written_on:           # Month + year (e.g. Jun 2026).
+young_people:         # Number of young people involved.
+workshops:            # Number of workshops in the period.
+total_hours:          # Total hours (e.g. 21h30).
 hero_image:           # Filename of the hero image, placed alongside this .md.
 lab_logo:             # Filename of your lab logo, placed alongside this .md.
 ```
 
 ---
 
-## Chapter 01 · Where it started
+## Chapter 01 · Where it began
 
 ### The issue we set out to address
 
@@ -47,15 +44,15 @@ lab_logo:             # Filename of your lab logo, placed alongside this .md.
 
 > Write here.
 
-### The young people
+### The participants
 
-*Describe them with dignity, not as statistics. Their context, what they brought to the room. Two to three sentences.*
+*Their context, what they brought to the room. Two to three sentences.*
 
 > Write here.
 
 ### The goal
 
-*What the lab and its partners set out to make happen. The bigger why behind the activity. Two to three sentences.*
+*What the lab sets out to make happen. The bigger why behind the activity. Two to three sentences.*
 
 > Write here.
 
@@ -63,52 +60,19 @@ lab_logo:             # Filename of your lab logo, placed alongside this .md.
 
 ## Chapter 02 · What we tried
 
-### The activity and its framing
+### The practice and how we applied it
 
-*The source activity in the consortium catalogue, and how this lab framed and adapted it. One paragraph.*
+*In a few lines, name the practice or principle you wanted to demonstrate, then show how you applied it across several moments, and what you adjusted along the way. One paragraph.*
 
 > Write here.
 
 ### The setup and the people involved
 
-*Materials, room layout, timeline in two or three steps. Animators, partners, and other people involved. One paragraph.*
+*Materials, room layout, and the flow in two or three steps. Facilitators, partners, and other people involved. One paragraph.*
 
 > Write here.
 
-### Video
-
-*A short video showing the activity unfolding. One to three minutes is enough. Provide a file name (placed alongside this .md) or a link.*
-
-```yaml
-video:                # Filename or URL.
-```
-
----
-
-## Chapter 03 · What unfolded
-
-### What we observed
-
-*Moments that stood out, reactions, dynamics, the surprising and the ordinary. Three to five lines.*
-
-> Write here.
-
-### A challenge along the way
-
-*Something that did not go as planned, and how the team adapted in the moment. Two to four lines.*
-
-> Write here.
-
-### A young person said
-
-*An exact quote, in their voice. First person. One or two sentences. Fill the two fields below.*
-
-```yaml
-quote:                # The quote, exactly as said.
-quote_by:             # First name, age. Use a pseudonym if needed.
-```
-
-### What the young people produced
+### What the participants produced
 
 *Two or three photos of productions, sketches, or screenshots. Provide file names placed alongside this .md.*
 
@@ -121,17 +85,42 @@ production_2_caption: # One short caption.
 
 ---
 
+## Chapter 03 · What unfolded
+
+### What we observed
+
+*Moments that stood out: reactions, dynamics, the surprising and the ordinary. Three to five lines.*
+
+> Write here.
+
+### A challenge along the way
+
+*Something that did not go as planned, and how the team adapted in the moment. Two to four lines.*
+
+> Write here.
+
+### Testimonies from the Lab
+
+*A short testimony (3 to 6 lines) in the speaker's voice. It can be a paraphrased reflection if a direct quote falls flat.*
+
+```yaml
+testimony:            # A few lines. Quote or paraphrase.
+testimony_by:         # First name + age, or role. Use a pseudonym if needed.
+```
+
+---
+
 ## Chapter 04 · The impact
 
-### What changed for the young people
+### What changed for the participants
 
-*Concrete shifts in skills, attitudes or intentions. Avoid broad sweeping statements. Three to five lines.*
+*Concrete shifts in skills, attitudes, or intentions. Stay specific. Three to five lines.*
 
 > Write here.
 
 ### Numbers that anchor the story
 
-*A few figures that make the impact tangible. Young people reached, sessions held, productions made. Replace the placeholders below; keep the format "number — what it counts".*
+*A few figures that make the impact tangible. Young people reached, sessions held, productions made. Keep the format "number — what it counts".*
 
 - _ — _
 - _ — _
@@ -139,48 +128,51 @@ production_2_caption: # One short caption.
 
 ### Skills addressed
 
-*Tick the skill tree branches this story touched. Mark with `[x]` for addressed, leave `[ ]` for the rest.*
+*List up to 8 skills tackled by the success story.*
 
-- [ ] data literacy
-- [ ] critical thinking
-- [ ] collaboration
-- [ ] prompting
-- [ ] algorithmic thinking
-- [ ] creativity
-- [ ] debugging
-- [ ] prioritisation
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
 
 ---
 
-## Chapter 05 · Where it goes from here
+## Chapter 05 · Where it goes next
 
 ### How this will be sustained or extended
 
-*Plans for the same young people, or plans to expand the impact further. Two to four lines.*
+*Plans for the same young people, or plans to extend the impact. Two to four lines.*
 
 > Write here.
 
-### For other labs picking this up
+### For the youth community picking this up
 
-*What another lab should know to retell this story their own way. Three to five lines.*
-
-> Write here.
-
-### A word from the mentors
-
-*A closing reflection from the team that ran the activity. One to three sentences, written in their voice.*
+*What facilitators, youth workers, or educators should know to reuse this practice in their own context. Three to five lines.*
 
 > Write here.
+
+### The next workshops
+
+*A short timeline of the upcoming workshops. For each step give a date, a title, and one line on what it covers. Two or three steps.*
 
 ```yaml
-mentors_sign:         # — The [lab] team, or another signature
+next_1_when:          # MMM YYYY (or "MMM YYYY · intensive week")
+next_1_title:         # Workshop title
+next_1_intent:        # One line on what it covers
+next_2_when:          # MMM YYYY
+next_2_title:         # Workshop title
+next_2_intent:        # One line on what it covers
 ```
 
 ---
 
 ## Period photo gallery
 
-*Twelve photos that visually capture the activities, faces and productions of this reporting period across all your success stories. Provide file names placed alongside this .md.*
+*Nine photos that visually capture the activities, faces and productions of this reporting period. Provide file names placed alongside this .md.*
 
 ```yaml
 gallery:
@@ -193,9 +185,6 @@ gallery:
   - photo-07.jpg
   - photo-08.jpg
   - photo-09.jpg
-  - photo-10.jpg
-  - photo-11.jpg
-  - photo-12.jpg
 ```
 
 ---
@@ -204,11 +193,8 @@ gallery:
 
 - [ ] All frontmatter fields filled
 - [ ] All five chapters written
-- [ ] One quote captured in the young person's voice
+- [ ] One testimony captured (quote or paraphrase)
 - [ ] At least two photos provided with captions
 - [ ] Numbers section uses concrete figures
-- [ ] Mentors' word reads like the team speaking, not a report
-- [ ] Contractions ("did not" not "didn't") replaced with full forms
+- [ ] Next workshops listed (date · title · one line)
 - [ ] No images of young people published without parental consent
-
-Send the filled `.md` and all referenced media files in a single folder.
